@@ -1,0 +1,9 @@
+<script type="text/javascript" tal:content="view/js"></script>
+<div tal:attributes="id string:${view/id}-autocomplete">
+    <tal:block replace="structure view/subform/render" />
+    <tal:block condition="nocall:view/terms">
+        <noscript>
+            <div tal:replace="structure view/renderQueryWidget" />
+        </noscript>
+    </tal:block>
+</div>
