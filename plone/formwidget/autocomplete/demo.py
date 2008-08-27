@@ -7,8 +7,11 @@ from zope.schema.interfaces import IContextSourceBinder
 
 from z3c.formwidget.query.interfaces import IQuerySource
 
-from plone.formwidget.autocomplete import AutocompleteSelectionFieldWidget
-from plone.formwidget.autocomplete import AutocompleteMultiSelectionFieldWidget
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
+
+from z3c.formwidget.query.widget import QuerySourceFieldRadioWidget
+from z3c.formwidget.query.widget import QuerySourceFieldCheckboxWidget
 
 from z3c.form import form, button, field
 from plone.z3cform import layout
@@ -79,12 +82,14 @@ class TestAdapter(object):
 
 class TestForm(form.Form):
     fields = field.Fields(ITestForm)
-    fields['single_keyword'].widgetFactory = AutocompleteSelectionFieldWidget
-    fields['keywords'].widgetFactory = AutocompleteMultiSelectionFieldWidget
+    fields['single_keyword'].widgetFactory = AutocompleteFieldWidget
+    fields['keywords'].widgetFactory = AutocompleteMultiFieldWidget
+    
+    # fields['single_keyword'].widgetFactory = QuerySourceFieldRadioWidget
+    # fields['keywords'].widgetFactory = QuerySourceFieldCheckboxWidget
     
     @button.buttonAndHandler(u'Ok')
     def handle_ok(self, action):
-        import pdb ; pdb.set_trace( )
         data, errors = self.extractData()
         print data, errors
 

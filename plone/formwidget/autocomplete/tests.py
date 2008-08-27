@@ -1,54 +1,16 @@
+import os
 import unittest
 
-from zope.testing import doctestunit
-from zope.component import testing
-from Testing import ZopeTestCase as ztc
+from zope.testing import doctest
+from zope.app.testing.functional import ZCMLLayer
 
-from Products.Five import zcml
-from Products.Five import fiveconfigure
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import PloneSite
-ptc.setupPloneSite()
-
-import plone.formwidget.autocomplete
-
-class TestCase(ptc.PloneTestCase):
-    class layer(PloneSite):
-        @classmethod
-        def setUp(cls):
-            fiveconfigure.debug_mode = True
-            zcml.load_config('configure.zcml',
-                             plone.formwidget.autocomplete)
-            fiveconfigure.debug_mode = False
-
-        @classmethod
-        def tearDown(cls):
-            pass
-
+testing_zcml_path = os.path.join(os.path.dirname(__file__), 'testing.zcml')
+testing_zcml_layer = ZCMLLayer(testing_zcml_path, 'plone.formwidget.autocomplete', 'testing_zcml_layer')
 
 def test_suite():
+    readme_txt = doctest.DocFileSuite('README.txt')
+    readme_txt.layer = testing_zcml_layer
+    
     return unittest.TestSuite([
-
-        # Unit tests
-        #doctestunit.DocFileSuite(
-        #    'README.txt', package='plone.formwidget.autocomplete',
-        #    setUp=testing.setUp, tearDown=testing.tearDown),
-
-        #doctestunit.DocTestSuite(
-        #    module='plone.formwidget.autocomplete.mymodule',
-        #    setUp=testing.setUp, tearDown=testing.tearDown),
-
-
-        # Integration tests that use PloneTestCase
-        #ztc.ZopeDocFileSuite(
-        #    'README.txt', package='plone.formwidget.autocomplete',
-        #    test_class=TestCase),
-
-        #ztc.FunctionalDocFileSuite(
-        #    'browser.txt', package='plone.formwidget.autocomplete',
-        #    test_class=TestCase),
-
+        readme_txt,
         ])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
