@@ -1,5 +1,0 @@
-plone.formwidget.autocomplete to-do
-===================================
-
- - traversal namespace in plone.z3cform may need explicit security check
- - add some tests and clean up demo

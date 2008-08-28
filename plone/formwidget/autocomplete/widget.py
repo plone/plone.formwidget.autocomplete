@@ -1,4 +1,5 @@
 from zope.interface import implements, implementer
+from zope.component import getMultiAdapter
 
 import z3c.form.interfaces
 import z3c.form.widget
@@ -13,12 +14,27 @@ from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
+from AccessControl import getSecurityManager, Unauthorized
 from Acquisition import Explicit
 from Products.Five.browser import BrowserView
 
 class AutocompleteSearch(BrowserView):
     
+    def validate_access(self):
+        content = self.context.form.context
+        view_name = self.context.form.__name__
+        view_instance = getMultiAdapter((content, self.request), name=view_name).__of__(content)
+        
+        # May raise Unauthorized
+        getSecurityManager().validate(content, content, view_name, view_instance)
+        
     def __call__(self):
+        
+        # We want to check that the user was indeed allowed to access the
+        # form for this widget. We can only this now, since security isn't
+        # applied yet during traversal.
+        self.validate_access()
+        
         query = self.request.get('q', None)
         limit = self.request.get('limit', None)
         if not query:
@@ -38,7 +54,8 @@ class AutocompleteSearch(BrowserView):
         else:
             terms = set()
         
-        return '\n'.join(["%s|%s" % (t.token,  t.title or t.token) for t in sorted(terms)])
+        return '\n'.join(["%s|%s" % (t.token,  t.title or t.token) 
+                            for t in sorted(terms, key=lambda t: t.title)])
     
 class AutocompleteBase(Explicit):
     implements(IAutocompleteWidget)
@@ -64,6 +81,7 @@ class AutocompleteBase(Explicit):
         return self.widget_template(self)
     
     def extract(self, default=z3c.form.interfaces.NOVALUE):
+        
         subform = self.subform
         search_button_name = subform.buttons['search'].__name__
         search_button_id = z3c.form.util.expandPrefix(subform.prefix) + search_button_name
@@ -72,12 +90,12 @@ class AutocompleteBase(Explicit):
         
         if search_button_id in self.request.form:
             # This was a non-AJAX search. The base class will take care of it
-            return z3c.form.widget.SequenceWidget.extract(self, default)
+            value = self.extractQueryWidget(default)
             
         elif self.name in self.request.form:
             # This was a standard submit and we used the non-AJAX version.
             # Again, let the base class do its thing
-            return z3c.form.widget.SequenceWidget.extract(self, default)
+            value = self.extractQueryWidget(default)
             
         elif query_id in self.request.form:
             # Form was submitted with a value in the search box and no value
@@ -103,9 +121,16 @@ class AutocompleteBase(Explicit):
                 except LookupError:
                     return default
             
-            return sorted(tokens)
+            value = sorted(tokens)
         else:
+            value = default
+            
+        if value is z3c.form.interfaces.NOVALUE or value is default:
+            return value
+        elif len(value) == 0:
             return default
+        else:
+            return value
     
     def js(self):
         
@@ -115,12 +140,12 @@ class AutocompleteBase(Explicit):
         
         url = "%s/@@%s/++widget++%s/@@autocomplete-search" % (form_context.absolute_url(), form_name, widget_name)
         
-        tokens = [self.terms.getTerm(value).token for value in self.selection]
+        tokens = [self.terms.getTerm(value).token for value in self.value if value]
         
         return """
         (function($) {
             $().ready(function() {
-                $('#%(id)s-buttons-search').hide();
+                $('#%(id)s-buttons-search').remove();
                 $('#%(id)s-widgets-query').autocomplete('%(url)s', {
                     autoFill: %(autoFill)s,
                     minChars: %(minChars)d,
@@ -159,9 +184,9 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     multiple = True
     
 @implementer(z3c.form.interfaces.IFieldWidget)
-def AutocompleteSelectionFieldWidget(field, request):
+def AutocompleteFieldWidget(field, request):
     return z3c.form.widget.FieldWidget(field, AutocompleteSelectionWidget(request))
 
 @implementer(z3c.form.interfaces.IFieldWidget)
-def AutocompleteMultiSelectionFieldWidget(field, request):
+def AutocompleteMultiFieldWidget(field, request):
     return z3c.form.widget.FieldWidget(field, AutocompleteMultiSelectionWidget(request))    
