@@ -40,12 +40,7 @@ class AutocompleteSearch(BrowserView):
         if not query:
             return ''
         
-        source = self.context.source
-        
-        if IContextSourceBinder.providedBy(source):
-            source = source(self.context.context)
-        
-        assert ISource.providedBy(source)
+        source = self.context.bound_source
 
         # TODO: use limit?
         
@@ -108,12 +103,7 @@ class AutocompleteBase(Explicit):
                                 if token.strip()])
             
             # Validate the tokens against the original source
-            source = self.source
-
-            if IContextSourceBinder.providedBy(source):
-                source = source(self.context.context)
-
-            assert ISource.providedBy(source)
+            source = self.bound_source
 
             for token in tokens:
                 try:
