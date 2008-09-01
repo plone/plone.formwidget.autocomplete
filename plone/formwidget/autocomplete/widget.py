@@ -3,9 +3,6 @@ from zope.component import getMultiAdapter
 
 import z3c.form.interfaces
 import z3c.form.widget
-import z3c.form.util
-
-from zope.schema.interfaces import ISource, IContextSourceBinder
 
 from z3c.formwidget.query.widget import QuerySourceRadioWidget
 from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
@@ -14,7 +11,7 @@ from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
-from AccessControl import getSecurityManager, Unauthorized
+from AccessControl import getSecurityManager
 from Acquisition import Explicit
 from Products.Five.browser import BrowserView
 
@@ -67,60 +64,42 @@ class AutocompleteBase(Explicit):
     maxResults = 10
     mustMatch = True
     matchContains = True
-    multiple = False
-    multipleSeparator = ';'
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
-    formatResult = 'function(row, idx, count) { return row[0]; }'
+    formatResult = 'function(row, idx, count) { return ""; }'
+    
+    # JavaScript template
+    
+    js_callback_template = """\
+    function(event, data, formatted) {
+        var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
+        if(field.length == 0) {
+            $('#%(id)s-%(termCount)d-wrapper').remove();
+            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><label for='%(id)s-%(termCount)d'><input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><span class='label'>" + data[1] + "</span></label></span>");
+        } else {
+            field.each(function() { this.checked = true });
+        }
+    }
+    """
+    
+    js_template = """\
+    (function($) {
+        $().ready(function() {
+            $('#%(id)s-buttons-search').remove();
+            $('#%(id)s-widgets-query').autocomplete('%(url)s', {
+                autoFill: %(autoFill)s,
+                minChars: %(minChars)d,
+                max: %(maxResults)d,
+                mustMatch: %(mustMatch)s,
+                matchContains: %(matchContains)s,
+                formatItem: %(formatItem)s,
+                formatResult: %(formatResult)s
+            }).result(%(js_callback)s);
+        });
+    })(jQuery);
+    """
     
     def render(self):
         return self.widget_template(self)
-    
-    def extract(self, default=z3c.form.interfaces.NOVALUE):
-        
-        subform = self.subform
-        search_button_name = subform.buttons['search'].__name__
-        search_button_id = z3c.form.util.expandPrefix(subform.prefix) + search_button_name
-        
-        query_id = subform.widgets['query'].name
-        
-        if search_button_id in self.request.form:
-            # This was a non-AJAX search. The base class will take care of it
-            value = self.extractQueryWidget(default)
-            
-        elif self.name in self.request.form:
-            # This was a standard submit and we used the non-AJAX version.
-            # Again, let the base class do its thing
-            value = self.extractQueryWidget(default)
-            
-        elif query_id in self.request.form:
-            # Form was submitted with a value in the search box and no value
-            # for the radio button/checkbox. Thus, the autocomplete widget
-            # was used and gave us a value
-            
-            query_data = subform.widgets['query'].extract()
-            tokens = set([token.strip()
-                            for token in query_data.split(self.multipleSeparator)
-                                if token.strip()])
-            
-            # Validate the tokens against the original source
-            source = self.bound_source
-
-            for token in tokens:
-                try:
-                    term = source.getTermByToken(token)
-                except LookupError:
-                    return default
-            
-            value = sorted(tokens)
-        else:
-            value = default
-            
-        if value is z3c.form.interfaces.NOVALUE or value is default:
-            return value
-        elif len(value) == 0:
-            return default
-        else:
-            return value
     
     def js(self):
         
@@ -129,39 +108,23 @@ class AutocompleteBase(Explicit):
         widget_name = self.name.split('.')[-1]
         
         url = "%s/@@%s/++widget++%s/@@autocomplete-search" % (form_context.absolute_url(), form_name, widget_name)
+
+        js_callback = self.js_callback_template % dict(id=self.id,
+                                                       name=self.name,
+                                                       klass=self.klass,
+                                                       title=self.title,
+                                                       termCount=len(self.terms))
         
-        tokens = [self.terms.getTerm(value).token for value in self.value if value]
-        
-        return """
-        (function($) {
-            $().ready(function() {
-                $('#%(id)s-buttons-search').remove();
-                $('#%(id)s-widgets-query').autocomplete('%(url)s', {
-                    autoFill: %(autoFill)s,
-                    minChars: %(minChars)d,
-                    max: %(maxResults)d,
-                    mustMatch: %(mustMatch)s,
-                    matchContains: %(matchContains)s,
-                    multiple: %(multiple)s,
-                    multipleSeparator: '%(multipleSeparator)s',
-                    formatItem: %(formatItem)s,
-                    formatResult: %(formatResult)s
-                });
-                $('#%(id)s-widgets-query').attr('value', '%(selected)s');
-            });
-        })(jQuery);
-        """ % dict(url=url,
-                   id=self.name.replace('.', '-'), 
-                   autoFill=str(self.autoFill).lower(),
-                   minChars=self.minChars,
-                   maxResults=self.maxResults,
-                   mustMatch=str(self.mustMatch).lower(),
-                   matchContains=str(self.matchContains).lower(),
-                   multiple=str(self.multiple).lower(),
-                   multipleSeparator=self.multipleSeparator,
-                   formatItem=self.formatItem,
-                   formatResult=self.formatResult,
-                   selected=self.multipleSeparator.join(tokens))
+        return self.js_template % dict(id=self.id,
+                                       url=url,
+                                       autoFill=str(self.autoFill).lower(),
+                                       minChars=self.minChars,
+                                       maxResults=self.maxResults,
+                                       mustMatch=str(self.mustMatch).lower(),
+                                       matchContains=str(self.matchContains).lower(),
+                                       formatItem=self.formatItem,
+                                       formatResult=self.formatResult,
+                                       js_callback=js_callback)
 
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.
@@ -171,7 +134,16 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     """Autocomplete widget that allows multiple selection
     """
     
-    multiple = True
+    js_callback_template = """\
+    function(event, data, formatted) {
+        var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
+        if(field.length == 0) {
+            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><label for='%(id)s-%(termCount)d'><input type='checkbox' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><span class='label'>" + data[1] + "</span></label></span>");
+        } else {
+            field.each(function() { this.checked = true });
+        }
+    }
+    """
     
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteFieldWidget(field, request):

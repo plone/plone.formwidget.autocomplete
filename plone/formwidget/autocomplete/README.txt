@@ -145,9 +145,10 @@ like this:
 The results are a newline-delimited list of key-value pairs separated by
 pipes.
 
-Finally, let's prove that we can extract values from the request. To allow
-fallback on the standard z3c.formwidget.query widget for browsers not
-capable of using JavaScript, we make some assumptions about the request:
+Finally, let's prove that we can extract values from the request. The
+JavaScript handler for the autocomplete search event will simply write out
+checkbox or radio button widgets, so we can use the standard
+z3c.formwidget.query extract() method.
 
   - If the search button from the query subform was clicked, then assume
     that we are doing an intermediate request for a search in non-AJAX
@@ -162,9 +163,9 @@ capable of using JavaScript, we make some assumptions about the request:
     >>> form_view.form_instance.widgets['visited_cities'].extract()
     ['torino']
     
-  - Otherwise, if the widget id is in the request, then it was probably a
-    non-AJAX request, with the user selecting a radio button (single select)
-    or clicking a checkbox (multi-select).
+  - Otherwise, if the widget id and form submit button are in the request,
+    the user must have selected a radio button (single select) or one or more
+    checkboxes (multi-select).
     
     >>> search_request = make_request({'form.widgets.visited_cities.widgets.query': 'sorrento',
     ...                                'form.widgets.visited_cities': ['torino'],
@@ -176,18 +177,7 @@ capable of using JavaScript, we make some assumptions about the request:
     >>> form_view.form_instance.widgets['visited_cities'].extract()
     ['torino']
     
-  - Otherwise, if the query text field was in the request, then it probably
-    contains the values from the auto-select widget.
-    
-    >>> search_request = make_request({'form.widgets.visited_cities.widgets.query': 'sorrento',
-    ...                                'form.buttons.apply': 'Apply'})
-    >>> form_view = getMultiAdapter((context, search_request), name=u"cities-form")
-    >>> form_view.form_instance.update()
-    Submitted data: {'visited_cities': [u'Sorrento']}
-    >>> form_view.form_instance.widgets['visited_cities'].extract()
-    ['sorrento']
-    
-  - Finally, if there was nothing selected, we return <NOVALUE>
+  - Finally, if there nothing was selected, we return <NOVALUE>
   
     >>> search_request = make_request({'form.widgets.visited_cities-empty-marker': '1',
     ...                                'form.buttons.apply': 'Apply'})

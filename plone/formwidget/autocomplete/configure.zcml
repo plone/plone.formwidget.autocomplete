@@ -1,6 +1,5 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:z3c="http://namespaces.zope.org/z3c"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:gs="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.formwidget.autocomplete">
@@ -26,15 +25,8 @@
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
-
-    <!-- Demo
-    <browser:page
-        for="*"
-        name="test-selection-widget"
-        class="plone.formwidget.autocomplete.demo.TestView"
-        permission="cmf.ModifyPortalContent"
-        />
-    <adapter factory="plone.formwidget.autocomplete.demo.TestAdapter" />
-    -->
+    
+    <!-- Demo view for testing -->
+    <include file="demo.zcml" />
 
 </configure>
