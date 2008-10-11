@@ -78,6 +78,7 @@ class AutocompleteBase(Explicit):
         } else {
             field.each(function() { this.checked = true });
         }
+        $('#%(id)s-widgets-query').each(function() { this.value = "" });
     }
     """
     
@@ -94,9 +95,14 @@ class AutocompleteBase(Explicit):
                 formatItem: %(formatItem)s,
                 formatResult: %(formatResult)s
             }).result(%(js_callback)s);
+            %(js_extra)s
         });
     })(jQuery);
     """
+    
+    # Override this to insert additional JavaScript
+    def js_extra(self):
+        return ""
     
     def render(self):
         return self.widget_template(self)
@@ -124,7 +130,8 @@ class AutocompleteBase(Explicit):
                                        matchContains=str(self.matchContains).lower(),
                                        formatItem=self.formatItem,
                                        formatResult=self.formatResult,
-                                       js_callback=js_callback)
+                                       js_callback=js_callback,
+                                       js_extra=self.js_extra())
 
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.

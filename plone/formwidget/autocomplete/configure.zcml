@@ -26,8 +26,7 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
     
-    <!-- Demo view for testing
+    <!-- Demo view for testing -->
     <include file="demo.zcml" />
-    -->
 
 </configure>
