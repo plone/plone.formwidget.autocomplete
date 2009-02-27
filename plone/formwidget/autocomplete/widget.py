@@ -3,6 +3,7 @@ from zope.component import getMultiAdapter
 
 import z3c.form.interfaces
 import z3c.form.widget
+import z3c.form.util
 
 from z3c.formwidget.query.widget import QuerySourceRadioWidget
 from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
@@ -18,11 +19,12 @@ from Products.Five.browser import BrowserView
 class AutocompleteSearch(BrowserView):
     
     def validate_access(self):
-        content = self.context.form.context
-        view_name = self.context.form.__name__
-        view_instance = getMultiAdapter((content, self.request), name=view_name).__of__(content)
         
+        content = self.context.form.context
+        view_name = self.request.getURL().split('/')[-3] # /path/to/obj/++widget++wname/@@autocomplete-search?q=foo
+
         # May raise Unauthorized
+        view_instance = content.restrictedTraverse(view_name)
         getSecurityManager().validate(content, content, view_name, view_instance)
         
     def __call__(self):
@@ -109,11 +111,12 @@ class AutocompleteBase(Explicit):
     
     def js(self):
         
-        form_context = self.form.__parent__
-        form_name = self.form.__name__
-        widget_name = self.name.split('.')[-1]
+        form_url = self.request.getURL()
         
-        url = "%s/@@%s/++widget++%s/@@autocomplete-search" % (form_context.absolute_url(), form_name, widget_name)
+        form_prefix = self.form.prefix + self.__parent__.prefix
+        widget_name = self.name[len(form_prefix):]
+        
+        url = "%s/++widget++%s/@@autocomplete-search" % (form_url, widget_name,)
 
         js_callback = self.js_callback_template % dict(id=self.id,
                                                        name=self.name,
