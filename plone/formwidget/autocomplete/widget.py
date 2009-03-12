@@ -76,7 +76,7 @@ class AutocompleteBase(Explicit):
         var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><label for='%(id)s-%(termCount)d'><input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><label for='%(id)s-%(termCount)d'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><span class='label'>" + data[1] + "</span></label></span>");
         } else {
             field.each(function() { this.checked = true });
         }
@@ -148,7 +148,7 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     function(event, data, formatted) {
         var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
         if(field.length == 0) {
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><label for='%(id)s-%(termCount)d'><input type='checkbox' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><label for='%(id)s-%(termCount)d'><" + "input type='checkbox' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><span class='label'>" + data[1] + "</span></label></span>");
         } else {
             field.each(function() { this.checked = true });
         }
