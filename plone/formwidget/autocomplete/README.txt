@@ -50,11 +50,12 @@ Then, we will set up a simple test form and context.
     >>> from zope.annotation.interfaces import IAttributeAnnotatable
     >>> from z3c.form.interfaces import IFormLayer
 
-    >>> def make_request(form={}):
+    >>> def make_request(path, form={}):
     ...     request = TestRequest()
     ...     request.form.update(form)
     ...     alsoProvides(request, IFormLayer)
     ...     alsoProvides(request, IAttributeAnnotatable)
+    ...     request._traversed_names = path.split('/')
     ...     return request
 
     >>> from zope.interface import Interface
@@ -108,12 +109,13 @@ Let us now look up the form and attempt to render the widget.
     >>> from zope.component import getMultiAdapter
     >>> from OFS.Application import Application
     >>> app = Application()
+    >>> app.REQUEST = make_request('/') # eeeevil
     >>> context = Bar('bar').__of__(app)
-    >>> request = make_request()
 
 Simulates traversal:
 
-    >>> form_view = getMultiAdapter((context, request), name=u"cities-form")
+    >>> request = make_request('bar/@@cities-form')
+    >>> form_view = getMultiAdapter((context, request), name=u"cities-form").__of__(context)
     >>> form_view.__name__ = 'cities-form'
 
 Simulates partial rendering:
@@ -123,12 +125,12 @@ Simulates partial rendering:
     >>> form.update()
     >>> print form.widgets['favourite_city'].render() # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     <script type="text/javascript">
-    ... $('#form-widgets-favourite_city-widgets-query').autocomplete('bar/@@cities-form/++widget++favourite_city/@@autocomplete-search', {
+    ... $('#form-widgets-favourite_city-widgets-query').autocomplete('http://127.0.0.1/bar/@@cities-form/++widget++favourite_city/@@autocomplete-search', {
     ...
 
     >>> print form.widgets['visited_cities'].render() # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
     <script type="text/javascript">
-    ... $('#form-widgets-visited_cities-widgets-query').autocomplete('bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {
+    ... $('#form-widgets-visited_cities-widgets-query').autocomplete('http://127.0.0.1/bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {
     ...
     
 Above, we can see that the rendered JavaScript is expecting to call a view
@@ -136,7 +138,7 @@ Above, we can see that the rendered JavaScript is expecting to call a view
 like this:
     
     >>> widget = form.widgets['favourite_city']
-    >>> query_request = make_request({'q': 'or'})
+    >>> query_request = make_request('http://127.0.0.1/bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {'q': 'or'})
     >>> search_view = getMultiAdapter((widget, query_request), name=u'autocomplete-search')
     >>> print search_view()
     sorrento|Sorrento
@@ -154,7 +156,8 @@ z3c.formwidget.query extract() method.
     that we are doing an intermediate request for a search in non-AJAX
     mode. This button is hidden when JavaScript is enabled.
         
-    >>> search_request = make_request({'form.widgets.visited_cities.widgets.query': 'sorrento',
+    >>> search_request = make_request('bar/@@cities-form',
+    ...                               {'form.widgets.visited_cities.widgets.query': 'sorrento',
     ...                                'form.widgets.visited_cities': ['torino'],
     ...                                'form.widgets.visited_cities-empty-marker': '1',
     ...                                'form.widgets.visited_cities.buttons.search': 'Search'})
@@ -167,7 +170,8 @@ z3c.formwidget.query extract() method.
     the user must have selected a radio button (single select) or one or more
     checkboxes (multi-select).
     
-    >>> search_request = make_request({'form.widgets.visited_cities.widgets.query': 'sorrento',
+    >>> search_request = make_request('bar/@@cities-form',
+    ...                               {'form.widgets.visited_cities.widgets.query': 'sorrento',
     ...                                'form.widgets.visited_cities': ['torino'],
     ...                                'form.widgets.visited_cities-empty-marker': '1',
     ...                                'form.buttons.apply': 'Apply'})
@@ -179,7 +183,8 @@ z3c.formwidget.query extract() method.
     
   - Finally, if there nothing was selected, we return <NOVALUE>
   
-    >>> search_request = make_request({'form.widgets.visited_cities-empty-marker': '1',
+    >>> search_request = make_request('bar/@@cities-form',
+    ...                               {'form.widgets.visited_cities-empty-marker': '1',
     ...                                'form.buttons.apply': 'Apply'})
     >>> form_view = getMultiAdapter((context, search_request), name=u"cities-form")
     >>> form_view.form_instance.update()

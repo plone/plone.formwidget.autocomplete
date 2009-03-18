@@ -55,11 +55,13 @@ class KeywordSourceBinder(object):
 class ITestForm(Interface):
     
     single_keyword = schema.Choice(title=u"Single",
-                                   source=KeywordSourceBinder())
+                                   source=KeywordSourceBinder(),
+                                   required=False)
     
     keywords = schema.List(title=u"Multiple",
                            value_type=schema.Choice(title=u"Multiple",
-                                                    source=KeywordSourceBinder()))
+                                                    source=KeywordSourceBinder()),
+                            required=False)
 
 class TestAdapter(object):
     implements(ITestForm)

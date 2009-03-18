@@ -1,8 +1,15 @@
 Changelog
 =========
 
-1.0a1 - Unreleased
-----------------
+1.0b2 - Unreleased
+------------------
+
+* Made widget use getURL() instead of constructing URL from underlying
+  view. This makes it work with complex traversal logic.
+  [optilude]
+
+1.0b1 - 2008-08-28
+------------------
 
 * Initial release
 
