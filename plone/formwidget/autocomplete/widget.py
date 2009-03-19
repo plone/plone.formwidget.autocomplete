@@ -70,12 +70,14 @@ class AutocompleteBase(Explicit):
     
     # JavaScript template
     
+    # the funny <" + "input bit is to prevent breakage in testbrowser tests
+    # when it parses the js as a real input, but with a bogus value
     js_callback_template = """\
     function(event, data, formatted) {
         var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
         } else {
             field.each(function() { this.checked = true });
         }
@@ -143,11 +145,13 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     """Autocomplete widget that allows multiple selection
     """
     
+    # the funny <" + "input bit is to prevent breakage in testbrowser tests
+    # when it parses the js as a real input, but with a bogus value
     js_callback_template = """\
     function(event, data, formatted) {
         var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
         if(field.length == 0) {
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><input type='checkbox' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
         } else {
             field.each(function() { this.checked = true });
         }
