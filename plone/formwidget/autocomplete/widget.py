@@ -151,7 +151,8 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     function(event, data, formatted) {
         var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
         if(field.length == 0) {
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
+            var itemCount = $('#%(id)s-input-fields input').length;
+            $('#%(id)s-input-fields').append("<span id='%(id)s-" + itemCount + "-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-" + itemCount + "' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-" + itemCount + "'><span class='label'>" + data[1] + "</span></label></span>");
         } else {
             field.each(function() { this.checked = true });
         }
