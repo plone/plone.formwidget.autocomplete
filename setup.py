@@ -29,6 +29,7 @@ setup(name='plone.formwidget.autocomplete',
           'plone.z3cform',
       ],
       entry_points="""
-      # -*- Entry points: -*-
+      [z3c.autoinclude.plugin]
+      target = plone
       """,
       )
