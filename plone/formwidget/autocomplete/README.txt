@@ -181,13 +181,13 @@ z3c.formwidget.query extract() method.
     >>> form_view.form_instance.widgets['visited_cities'].extract()
     ['torino']
     
-  - Finally, if there nothing was selected, we return <NOVALUE>
+  - Finally, if there nothing was selected, we return an empty list
   
     >>> search_request = make_request('bar/@@cities-form',
     ...                               {'form.widgets.visited_cities-empty-marker': '1',
     ...                                'form.buttons.apply': 'Apply'})
     >>> form_view = getMultiAdapter((context, search_request), name=u"cities-form")
     >>> form_view.form_instance.update()
-    Submitted data: {}
+    Submitted data: {'visited_cities': []}
     >>> form_view.form_instance.widgets['visited_cities'].extract()
-    <NOVALUE>
+    []

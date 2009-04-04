@@ -57,8 +57,9 @@ class AutocompleteBase(Explicit):
     # if we call this 'template' or use a <z3c:widgetTemplate /> directive,
     # we'll get infinite recursion when trying to render the radio buttons.
 
-    widget_template = ViewPageTemplateFile('autocomplete_input.pt')
-
+    input_template = ViewPageTemplateFile('input.pt')
+    display_template = None # set by subclass
+    
     # Options passed to jQuery auto-completer
     autoFill = True
     minChars = 2
@@ -108,7 +109,10 @@ class AutocompleteBase(Explicit):
         return ""
     
     def render(self):
-        return self.widget_template(self)
+        if self.mode == z3c.form.interfaces.DISPLAY_MODE:
+            return self.display_template(self)
+        else:
+            return self.input_template(self)
     
     def js(self):
         
@@ -141,9 +145,15 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.
     """
     
+    klass = u'autocomplete-selection-widget'
+    display_template = ViewPageTemplateFile('display_selection.pt')
+    
 class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidget):
     """Autocomplete widget that allows multiple selection
     """
+    
+    klass = u'autocomplete-multiselection-widget'
+    display_template = ViewPageTemplateFile('display_multiselection.pt')
     
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
