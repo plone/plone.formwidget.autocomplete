@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.0b2 - Unreleased
+1.0b2 - 2009-08-04
 ------------------
+
+* Fix security validator to work with urls not including the @@ view name.
+  [optilude]
 
 * Made widget use getURL() instead of constructing URL from underlying
   view. This makes it work with complex traversal logic.
