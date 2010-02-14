@@ -163,8 +163,8 @@ z3c.formwidget.query extract() method.
     ...                                'form.widgets.visited_cities.buttons.search': 'Search'})
     >>> form_view = getMultiAdapter((context, search_request), name=u"cities-form")
     >>> form_view.form_instance.update()
-    >>> form_view.form_instance.widgets['visited_cities'].extract()
-    ['torino']
+    >>> form_view.form_instance.widgets['visited_cities'].extract() == ['torino'] # [u'torino'] in Zope 2.12
+    True
     
   - Otherwise, if the widget id and form submit button are in the request,
     the user must have selected a radio button (single select) or one or more
@@ -178,8 +178,8 @@ z3c.formwidget.query extract() method.
     >>> form_view = getMultiAdapter((context, search_request), name=u"cities-form")
     >>> form_view.form_instance.update()
     Submitted data: {'visited_cities': [u'Torino']}
-    >>> form_view.form_instance.widgets['visited_cities'].extract()
-    ['torino']
+    >>> form_view.form_instance.widgets['visited_cities'].extract() == ['torino'] # [u'torino'] in Zope 2.12
+    True
     
   - Finally, if there nothing was selected, we return an empty list
   
