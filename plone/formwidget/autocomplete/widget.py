@@ -1,4 +1,4 @@
-from zope.interface import implements, implementer
+from zope.interface import implements, implementsOnly, implementer
 
 import z3c.form.interfaces
 import z3c.form.widget
@@ -58,7 +58,7 @@ class AutocompleteSearch(BrowserView):
                             for t in sorted(terms, key=lambda t: t.title)])
     
 class AutocompleteBase(Explicit):
-    implements(IAutocompleteWidget)
+    implementsOnly(IAutocompleteWidget)
     
     # XXX: Due to the way the rendering of the QuerySourceRadioWidget works,
     # if we call this 'template' or use a <z3c:widgetTemplate /> directive,
