@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1 - unreleased
+------------------
+
+* Made the widget work properly in Zope 2.12.
+  [optilude]
+
 1.0b3 - 2009-06-29
 ------------------
 
