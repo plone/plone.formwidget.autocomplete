@@ -4,6 +4,11 @@ Changelog
 1.1 - unreleased
 ------------------
 
+* Issue 107: plone.formwidget.autocomplete: problems in IE8 when changing value
+  Added a JavaScript work around, which dechecks all existing radio fields before
+  adding a new one which is checked.
+  [jbaumann]
+  
 * Made the widget work properly in Zope 2.12.
   [optilude]
 

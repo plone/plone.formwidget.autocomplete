@@ -83,6 +83,7 @@ class AutocompleteBase(Explicit):
     js_callback_template = """\
     function(event, data, formatted) {
         var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
+        $('#%(id)s-input-fields input[type=radio]').attr('checked', '');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
             $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
@@ -182,4 +183,4 @@ def AutocompleteFieldWidget(field, request):
 
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteMultiFieldWidget(field, request):
-    return z3c.form.widget.FieldWidget(field, AutocompleteMultiSelectionWidget(request))    
+    return z3c.form.widget.FieldWidget(field, AutocompleteMultiSelectionWidget(request))
