@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1 - unreleased
-------------------
+1.0 - 2010-04-19
+----------------
 
 * Issue 107: plone.formwidget.autocomplete: problems in IE8 when changing value
   Added a JavaScript work around, which dechecks all existing radio fields before
