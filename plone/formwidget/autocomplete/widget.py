@@ -158,14 +158,14 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """
     
     klass = u'autocomplete-selection-widget'
-    display_template = ViewPageTemplateFile('display_selection.pt')
+    display_template = ViewPageTemplateFile('display.pt')
     
 class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidget):
     """Autocomplete widget that allows multiple selection
     """
     
     klass = u'autocomplete-multiselection-widget'
-    display_template = ViewPageTemplateFile('display_multiselection.pt')
+    display_template = ViewPageTemplateFile('display.pt')
     
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
