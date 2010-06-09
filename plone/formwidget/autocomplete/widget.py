@@ -44,7 +44,11 @@ class AutocompleteSearch(BrowserView):
         limit = self.request.get('limit', None)
         if not query:
             return ''
-        
+
+        # Update the widget before accessing the source.
+        # The source was only bound without security applied
+        # during traversal before.
+        self.context.update()
         source = self.context.bound_source
 
         # TODO: use limit?
