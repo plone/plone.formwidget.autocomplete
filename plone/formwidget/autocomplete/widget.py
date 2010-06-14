@@ -49,8 +49,7 @@ class AutocompleteSearch(BrowserView):
         # The source was only bound without security applied
         # during traversal before.
         self.context.update()
-        source = self.context.bound_source
-
+        source = self.context.source(self.context.form.context)
         # TODO: use limit?
         
         if query:
