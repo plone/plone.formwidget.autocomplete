@@ -75,6 +75,7 @@ class AutocompleteBase(Explicit):
     minChars = 2
     maxResults = 10
     mustMatch = True
+    matchCase = True
     matchContains = True
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
     formatResult = 'function(row, idx, count) { return ""; }'
@@ -106,6 +107,7 @@ class AutocompleteBase(Explicit):
                 minChars: %(minChars)d,
                 max: %(maxResults)d,
                 mustMatch: %(mustMatch)s,
+                matchCase: %(matchCase)s,
                 matchContains: %(matchContains)s,
                 formatItem: %(formatItem)s,
                 formatResult: %(formatResult)s
@@ -146,6 +148,7 @@ class AutocompleteBase(Explicit):
                                        minChars=self.minChars,
                                        maxResults=self.maxResults,
                                        mustMatch=str(self.mustMatch).lower(),
+                                       matchCase=str(self.matchCase).lower(),
                                        matchContains=str(self.matchContains).lower(),
                                        formatItem=self.formatItem,
                                        formatResult=self.formatResult,
