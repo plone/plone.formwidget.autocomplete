@@ -20,7 +20,14 @@ class AutocompleteSearch(BrowserView):
     def validate_access(self):
         
         content = self.context.form.context
-        view_name = self.request.getURL().split('/')[-3] # /path/to/obj/++widget++wname/@@autocomplete-search?q=foo
+
+        # If the object is not wrapped in an acquisition chain
+        # we cannot check any permission.
+        if not hasattr(content, 'aq_chain'):
+            return
+
+        url = self.request.getURL()
+        view_name = url[len(content.absolute_url()):].split('/')[1]
 
         # May raise Unauthorized
         
