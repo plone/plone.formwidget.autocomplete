@@ -13,6 +13,7 @@ from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from AccessControl import getSecurityManager
 from Acquisition import Explicit
+from Acquisition.interfaces import IAcquirer
 from Products.Five.browser import BrowserView
 
 class AutocompleteSearch(BrowserView):
@@ -23,7 +24,7 @@ class AutocompleteSearch(BrowserView):
 
         # If the object is not wrapped in an acquisition chain
         # we cannot check any permission.
-        if not hasattr(content, 'aq_chain'):
+        if not IAcquirer.providedBy(content):
             return
 
         url = self.request.getURL()
