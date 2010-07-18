@@ -94,9 +94,7 @@ Then, we will set up a simple test form and context.
     ...                factory=form_view,
     ...                name=u"cities-form")
 
-    >>> from OFS.SimpleItem import SimpleItem
-    >>> class Bar(SimpleItem):
-    ...     __allow_access_to_unprotected_subobjects__ = 1
+    >>> class Bar(object):
     ...     implements(ICities)
     ...     
     ...     def __init__(self, id):
@@ -107,15 +105,12 @@ Then, we will set up a simple test form and context.
 Let us now look up the form and attempt to render the widget.
 
     >>> from zope.component import getMultiAdapter
-    >>> from OFS.Application import Application
-    >>> app = Application()
-    >>> app.REQUEST = make_request('/') # eeeevil
-    >>> context = Bar('bar').__of__(app)
+    >>> context = Bar('bar')
 
 Simulates traversal:
 
     >>> request = make_request('bar/@@cities-form')
-    >>> form_view = getMultiAdapter((context, request), name=u"cities-form").__of__(context)
+    >>> form_view = getMultiAdapter((context, request), name=u"cities-form")
     >>> form_view.__name__ = 'cities-form'
 
 Simulates partial rendering:
