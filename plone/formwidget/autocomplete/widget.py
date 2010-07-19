@@ -97,7 +97,7 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-input-fields input[type=radio]').attr('checked', '');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>"));
         } else {
             field.each(function() { this.checked = true });
         }
@@ -106,6 +106,12 @@ class AutocompleteBase(Explicit):
     """
     
     js_template = """\
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
     (function($) {
         $().ready(function() {
             $('#%(id)s-buttons-search').remove();
