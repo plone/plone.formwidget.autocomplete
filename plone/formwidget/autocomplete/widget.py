@@ -13,6 +13,7 @@ from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from AccessControl import getSecurityManager
 from Acquisition import Explicit
+from Acquisition.interfaces import IAcquirer
 from Products.Five.browser import BrowserView
 
 class AutocompleteSearch(BrowserView):
@@ -20,7 +21,14 @@ class AutocompleteSearch(BrowserView):
     def validate_access(self):
         
         content = self.context.form.context
-        view_name = self.request.getURL().split('/')[-3] # /path/to/obj/++widget++wname/@@autocomplete-search?q=foo
+
+        # If the object is not wrapped in an acquisition chain
+        # we cannot check any permission.
+        if not IAcquirer.providedBy(content):
+            return
+
+        url = self.request.getURL()
+        view_name = url[len(content.absolute_url()):].split('/')[1]
 
         # May raise Unauthorized
         
@@ -89,7 +97,7 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-input-fields input[type=radio]').attr('checked', '');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>"));
         } else {
             field.each(function() { this.checked = true });
         }
@@ -98,6 +106,12 @@ class AutocompleteBase(Explicit):
     """
     
     js_template = """\
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
     (function($) {
         $().ready(function() {
             $('#%(id)s-buttons-search').remove();

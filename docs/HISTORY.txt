@@ -3,6 +3,15 @@ Changelog
 
 1.1 - unreleased
 ----------------
+
+* Fall back to the site to perform content-related operations if the
+  context is not wrapped into an aquisition chain.
+  [dukebody]
+
+* Compute the view name as the request URL left-stripped the content
+  absolute URL.
+  [dukebody]
+
 * Use the same display template for single- and multi-selection:   
   The single selection display template was non functional before.
   The value of a single selection field is wrapped in a list anyways
