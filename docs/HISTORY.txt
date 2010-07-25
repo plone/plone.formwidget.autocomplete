@@ -4,6 +4,10 @@ Changelog
 1.1 - unreleased
 ----------------
 
+* Force the inserted HTML radio buttons to be interpreted as HTML
+  instead of text.
+  [dukebody]
+
 * Fall back to the site to perform content-related operations if the
   context is not wrapped into an aquisition chain.
   [dukebody]
