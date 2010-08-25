@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1 - unreleased
+1.1 (2010-08-25)
 ----------------
 
 * Force the inserted HTML radio buttons to be interpreted as HTML
