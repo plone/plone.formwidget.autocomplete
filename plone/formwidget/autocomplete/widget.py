@@ -109,22 +109,25 @@ class AutocompleteBase(Explicit):
     """
 
     js_template = """\
-    (function($) {
-        $().ready(function() {
-            $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s');
-            $('#%(id)s-buttons-search').remove();
-            $('#%(id)s-widgets-query').autocomplete('%(url)s', {
-                autoFill: %(autoFill)s,
-                minChars: %(minChars)d,
-                max: %(maxResults)d,
-                mustMatch: %(mustMatch)s,
-                matchContains: %(matchContains)s,
-                formatItem: %(formatItem)s,
-                formatResult: %(formatResult)s
-            }).result(%(js_callback)s);
-            %(js_extra)s
-        });
-    })(jQuery);
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
+    jq(function($) {
+        $('#%(id)s-buttons-search').remove();
+        $('#%(id)s-widgets-query').autocomplete('%(url)s', {
+            autoFill: %(autoFill)s,
+            minChars: %(minChars)d,
+            max: %(maxResults)d,
+            mustMatch: %(mustMatch)s,
+            matchContains: %(matchContains)s,
+            formatItem: %(formatItem)s,
+            formatResult: %(formatResult)s
+        }).result(%(js_callback)s);
+        %(js_extra)s
+    });
     """
 
     # Override this to insert additional JavaScript
