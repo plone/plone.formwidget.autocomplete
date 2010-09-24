@@ -1,4 +1,4 @@
-from zope.interface import implements, implementsOnly, implementer
+from zope.interface import implementsOnly, implementer
 
 import z3c.form.interfaces
 import z3c.form.widget
@@ -17,9 +17,9 @@ from Acquisition.interfaces import IAcquirer
 from Products.Five.browser import BrowserView
 
 class AutocompleteSearch(BrowserView):
-    
+
     def validate_access(self):
-        
+
         content = self.context.form.context
 
         # If the object is not wrapped in an acquisition chain
@@ -31,25 +31,25 @@ class AutocompleteSearch(BrowserView):
         view_name = url[len(content.absolute_url()):].split('/')[1]
 
         # May raise Unauthorized
-        
+
         # If the view is 'edit', then traversal prefers the view and
         # restrictedTraverse prefers the edit() method present on most CMF
         # content. Sigh...
         if not view_name.startswith('@@') and not view_name.startswith('++'):
             view_name = '@@' + view_name
-        
+
         view_instance = content.restrictedTraverse(view_name)
         getSecurityManager().validate(content, content, view_name, view_instance)
-        
+
     def __call__(self):
-        
+
         # We want to check that the user was indeed allowed to access the
         # form for this widget. We can only this now, since security isn't
         # applied yet during traversal.
         self.validate_access()
-        
+
         query = self.request.get('q', None)
-        limit = self.request.get('limit', None)
+        # limit = self.request.get('limit', None)
         if not query:
             return ''
 
@@ -59,25 +59,25 @@ class AutocompleteSearch(BrowserView):
         self.context.update()
         source = self.context.bound_source
         # TODO: use limit?
-        
+
         if query:
             terms = set(source.search(query))
         else:
             terms = set()
-        
-        return '\n'.join(["%s|%s" % (t.token,  t.title or t.token) 
+
+        return '\n'.join(["%s|%s" % (t.token,  t.title or t.token)
                             for t in sorted(terms, key=lambda t: t.title)])
-    
+
 class AutocompleteBase(Explicit):
     implementsOnly(IAutocompleteWidget)
-    
+
     # XXX: Due to the way the rendering of the QuerySourceRadioWidget works,
     # if we call this 'template' or use a <z3c:widgetTemplate /> directive,
     # we'll get infinite recursion when trying to render the radio buttons.
 
     input_template = ViewPageTemplateFile('input.pt')
     display_template = None # set by subclass
-    
+
     # Options passed to jQuery auto-completer
     autoFill = True
     minChars = 2
@@ -86,9 +86,9 @@ class AutocompleteBase(Explicit):
     matchContains = True
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
     formatResult = 'function(row, idx, count) { return ""; }'
-    
+
     # JavaScript template
-    
+
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
     js_callback_template = """\
@@ -104,7 +104,7 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-widgets-query').each(function() { this.value = "" });
     }
     """
-    
+
     js_template = """\
     function htmlDecode(input){
         var e = document.createElement('div');
@@ -128,24 +128,24 @@ class AutocompleteBase(Explicit):
         });
     })(jQuery);
     """
-    
+
     # Override this to insert additional JavaScript
     def js_extra(self):
         return ""
-    
+
     def render(self):
         if self.mode == z3c.form.interfaces.DISPLAY_MODE:
             return self.display_template(self)
         else:
             return self.input_template(self)
-    
+
     def js(self):
-        
+
         form_url = self.request.getURL()
-        
+
         form_prefix = self.form.prefix + self.__parent__.prefix
         widget_name = self.name[len(form_prefix):]
-        
+
         url = "%s/++widget++%s/@@autocomplete-search" % (form_url, widget_name,)
 
         js_callback = self.js_callback_template % dict(id=self.id,
@@ -153,7 +153,7 @@ class AutocompleteBase(Explicit):
                                                        klass=self.klass,
                                                        title=self.title,
                                                        termCount=len(self.terms))
-        
+
         return self.js_template % dict(id=self.id,
                                        url=url,
                                        autoFill=str(self.autoFill).lower(),
@@ -169,17 +169,17 @@ class AutocompleteBase(Explicit):
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.
     """
-    
+
     klass = u'autocomplete-selection-widget'
     display_template = ViewPageTemplateFile('display.pt')
-    
+
 class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidget):
     """Autocomplete widget that allows multiple selection
     """
-    
+
     klass = u'autocomplete-multiselection-widget'
     display_template = ViewPageTemplateFile('display.pt')
-    
+
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
     js_callback_template = """\
@@ -193,7 +193,7 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
         }
     }
     """
-    
+
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteFieldWidget(field, request):
     return z3c.form.widget.FieldWidget(field, AutocompleteSelectionWidget(request))
