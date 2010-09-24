@@ -18,6 +18,8 @@ from Products.Five.browser import BrowserView
 
 class AutocompleteSearch(BrowserView):
 
+    max_results = 10
+
     def validate_access(self):
 
         content = self.context.form.context
@@ -49,7 +51,6 @@ class AutocompleteSearch(BrowserView):
         self.validate_access()
 
         query = self.request.get('q', None)
-        # limit = self.request.get('limit', None)
         if not query:
             return ''
 
@@ -58,10 +59,12 @@ class AutocompleteSearch(BrowserView):
         # during traversal before.
         self.context.update()
         source = self.context.bound_source
-        # TODO: use limit?
 
         if query:
-            terms = set(source.search(query))
+            data = source.search(query)
+            if self.max_results < len(data):
+                data = data[:self.max_results]
+            terms = set(data)
         else:
             terms = set()
 
@@ -80,7 +83,6 @@ class AutocompleteBase(Explicit):
 
     # Options passed to jQuery auto-completer
     minLength = 2
-    maxResults = 10
 
     # JavaScript template
 
@@ -111,7 +113,6 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-buttons-search').remove();
         $('#%(id)s-widgets-query').autocomplete('%(url)s', {
             minLength: %(minLength)d,
-            max: %(maxResults)d,
         }).result(%(js_callback)s);
         %(js_extra)s
     });
@@ -145,7 +146,6 @@ class AutocompleteBase(Explicit):
         return self.js_template % dict(id=self.id,
                                        url=url,
                                        minLength=self.minLength,
-                                       maxResults=self.maxResults,
                                        js_callback=js_callback,
                                        js_extra=self.js_extra())
 
