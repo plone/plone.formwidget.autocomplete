@@ -115,7 +115,8 @@ class AutocompleteBase(Explicit):
 
     jq(function($) {
         $('#%(id)s-buttons-search').remove();
-        $('#%(id)s-widgets-query').autocomplete('%(url)s', {
+        $('#%(id)s-widgets-query').autocomplete({
+            source: '%(url)s',
             minLength: %(minLength)d,
         }).result(%(js_callback)s);
         %(js_extra)s
