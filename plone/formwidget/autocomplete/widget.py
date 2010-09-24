@@ -112,21 +112,19 @@ class AutocompleteBase(Explicit):
         return e.childNodes[0].nodeValue;
     }
 
-    (function($) {
-        $().ready(function() {
-            $('#%(id)s-buttons-search').remove();
-            $('#%(id)s-widgets-query').autocomplete('%(url)s', {
-                autoFill: %(autoFill)s,
-                minChars: %(minChars)d,
-                max: %(maxResults)d,
-                mustMatch: %(mustMatch)s,
-                matchContains: %(matchContains)s,
-                formatItem: %(formatItem)s,
-                formatResult: %(formatResult)s
-            }).result(%(js_callback)s);
-            %(js_extra)s
-        });
-    })(jQuery);
+    jq(function($) {
+        $('#%(id)s-buttons-search').remove();
+        $('#%(id)s-widgets-query').autocomplete('%(url)s', {
+            autoFill: %(autoFill)s,
+            minChars: %(minChars)d,
+            max: %(maxResults)d,
+            mustMatch: %(mustMatch)s,
+            matchContains: %(matchContains)s,
+            formatItem: %(formatItem)s,
+            formatResult: %(formatResult)s
+        }).result(%(js_callback)s);
+        %(js_extra)s
+    });
     """
 
     # Override this to insert additional JavaScript
