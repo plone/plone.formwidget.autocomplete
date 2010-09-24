@@ -28,6 +28,7 @@ setup(name='plone.formwidget.autocomplete',
           'setuptools',
           'z3c.formwidget.query',
           'plone.z3cform >= 0.7.4',
+          'collective.js.jqueryui',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]
