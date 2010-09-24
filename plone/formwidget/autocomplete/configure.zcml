@@ -15,11 +15,6 @@
         class=".widget.AutocompleteSearch"
         />
 
-    <browser:resourceDirectory
-        name="plone.formwidget.autocomplete"
-        directory="jquery-autocomplete"
-        />
-
     <gs:registerProfile
         name="default"
         title="Autocomplete widget"
@@ -27,5 +22,8 @@
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
+
+    <!-- Demo view for testing -->
+    <include file="demo.zcml" />
 
 </configure>
