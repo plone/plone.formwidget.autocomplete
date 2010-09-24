@@ -5,6 +5,8 @@ from Acquisition.interfaces import IAcquirer
 from App.class_init import InitializeClass
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+import json
+
 import z3c.form.interfaces
 import z3c.form.widget
 import z3c.form.util
@@ -50,9 +52,9 @@ class AutocompleteSearch(BrowserView):
         # applied yet during traversal.
         self.validate_access()
 
-        query = self.request.get('q', None)
+        query = self.request.get('term', None)
         if not query:
-            return ''
+            return '[]'
 
         # Update the widget before accessing the source.
         # The source was only bound without security applied
@@ -61,15 +63,19 @@ class AutocompleteSearch(BrowserView):
         source = self.context.bound_source
 
         if query:
-            data = source.search(query)
-            if self.max_results < len(data):
-                data = data[:self.max_results]
-            terms = set(data)
+            # make it unique
+            terms = set(source.search(query))
         else:
             terms = set()
 
-        return '\n'.join(["%s|%s" % (t.token, t.title or t.token)
-                            for t in sorted(terms, key=lambda t: t.title)])
+        # sort results and then limit them
+        terms = tuple(sorted(terms, key=lambda t: t.title))
+
+        if self.max_results < len(terms):
+            terms = terms[:self.max_results]
+
+        return json.dumps([dict(label=t.title or t.token, value=t.token)
+                           for t in terms])
 
 
 class AutocompleteBase(Explicit):
@@ -118,7 +124,7 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-widgets-query').autocomplete({
             source: '%(url)s',
             minLength: %(minLength)d,
-        }).result(%(js_callback)s);
+        });
         %(js_extra)s
     });
     """
