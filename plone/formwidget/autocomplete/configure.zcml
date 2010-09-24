@@ -3,22 +3,17 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:gs="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone.formwidget.autocomplete">
-    
+
     <include package="plone.z3cform" />
     <include package="Products.GenericSetup" file="meta.zcml" />
-    
+
     <browser:page
         name="autocomplete-search"
         for=".interfaces.IAutocompleteWidget"
         permission="zope.Public"
         class=".widget.AutocompleteSearch"
         />
-    
-    <browser:resourceDirectory
-        name="plone.formwidget.autocomplete"
-        directory="jquery-autocomplete"
-        />
-        
+
     <gs:registerProfile
         name="default"
         title="Autocomplete widget"
@@ -26,7 +21,7 @@
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
-    
+
     <!-- Demo view for testing -->
     <include file="demo.zcml" />
 
