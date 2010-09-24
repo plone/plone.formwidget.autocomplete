@@ -82,13 +82,8 @@ class AutocompleteBase(Explicit):
     display_template = None # set by subclass
 
     # Options passed to jQuery auto-completer
-    autoFill = True
-    minChars = 2
+    minLength = 2
     maxResults = 10
-    mustMatch = True
-    matchContains = True
-    formatItem = 'function(row, idx, count, value) { return row[1]; }'
-    formatResult = 'function(row, idx, count) { return ""; }'
 
     # JavaScript template
 
@@ -118,13 +113,8 @@ class AutocompleteBase(Explicit):
     jq(function($) {
         $('#%(id)s-buttons-search').remove();
         $('#%(id)s-widgets-query').autocomplete('%(url)s', {
-            autoFill: %(autoFill)s,
-            minChars: %(minChars)d,
+            minLength: %(minLength)d,
             max: %(maxResults)d,
-            mustMatch: %(mustMatch)s,
-            matchContains: %(matchContains)s,
-            formatItem: %(formatItem)s,
-            formatResult: %(formatResult)s
         }).result(%(js_callback)s);
         %(js_extra)s
     });
@@ -157,13 +147,8 @@ class AutocompleteBase(Explicit):
 
         return self.js_template % dict(id=self.id,
                                        url=url,
-                                       autoFill=str(self.autoFill).lower(),
-                                       minChars=self.minChars,
+                                       minLength=self.minLength,
                                        maxResults=self.maxResults,
-                                       mustMatch=str(self.mustMatch).lower(),
-                                       matchContains=str(self.matchContains).lower(),
-                                       formatItem=self.formatItem,
-                                       formatResult=self.formatResult,
                                        js_callback=js_callback,
                                        js_extra=self.js_extra())
 
