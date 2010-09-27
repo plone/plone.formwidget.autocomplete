@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+* Use newer jQuery UI implementation of the autocomplete widget.
+  [jbaumann]
+
 
 1.2.2 (2011-09-24)
 ------------------
@@ -76,7 +79,7 @@ Changelog
   absolute URL.
   [dukebody]
 
-* Use the same display template for single- and multi-selection:   
+* Use the same display template for single- and multi-selection:
   The single selection display template was non functional before.
   The value of a single selection field is wrapped in a list anyways
   so the multiselection template renders the single selection field
@@ -96,7 +99,7 @@ Changelog
   Added a JavaScript work around, which dechecks all existing radio fields before
   adding a new one which is checked.
   [jbaumann]
-  
+
 * Made the widget work properly in Zope 2.12.
   [optilude]
 
