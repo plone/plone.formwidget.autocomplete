@@ -62,11 +62,8 @@ class AutocompleteSearch(BrowserView):
         self.context.update()
         source = self.context.bound_source
 
-        if query:
-            # make it unique
-            terms = set(source.search(query))
-        else:
-            terms = set()
+        # make it unique
+        terms = set(source.search(query))
 
         # sort results and then limit them
         terms = tuple(sorted(terms, key=lambda t: t.title))
@@ -96,24 +93,23 @@ class AutocompleteBase(Explicit):
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
     js_callback_template = """\
-    function(event, data, formatted) {
-        var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
+    function(event, ui) {
+        var field = $('#%(id)s-input-fields input[value="' + ui.item.value + '"]');
         $('#%(id)s-input-fields input[type=radio]').attr('checked', '');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>"));
+            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + ui.item.value + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + ui.item.label + "</span></label></span>"));
         } else {
-            field.each(function() { this.checked = true });
+            field.attr('checked', true);
         }
-        $('#%(id)s-widgets-query').each(function() { this.value = "" });
+        $('#%(id)s-widgets-query').attr('value', '');
+        event.preventDefault();
     }
     """
 
     js_template = """\
     function htmlDecode(input){
-        var e = document.createElement('div');
-        e.innerHTML = input;
-        return e.childNodes[0].nodeValue;
+        return $('<div/>').html(input).html();
     }
 
     jq(function($) {
@@ -121,6 +117,7 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-widgets-query').autocomplete({
             source: '%(url)s',
             minLength: %(minLength)d,
+            select: %(js_callback)s
         });
         %(js_extra)s
     });
@@ -174,14 +171,16 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
     js_callback_template = """\
-    function(event, data, formatted) {
-        var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
+    function(event, ui) {
+        var field = $('#%(id)s-input-fields input[value="' + ui.item.value + '"]');
         if(field.length == 0) {
             var itemCount = $('#%(id)s-input-fields input').length;
-            $('#%(id)s-input-fields').append("<span id='%(id)s-" + itemCount + "-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-" + itemCount + "' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-" + itemCount + "'><span class='label'>" + data[1] + "</span></label></span>");
+            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-" + itemCount + "-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-" + itemCount + "' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + ui.item.value + "' /><label for='%(id)s-" + itemCount + "'><span class='label'>" + ui.item.label + "</span></label></span>"));
         } else {
-            field.each(function() { this.checked = true });
+            field.attr('checked', true);
         }
+        $('#%(id)s-widgets-query').attr('value', '');
+        event.preventDefault();
     }
     """
 
