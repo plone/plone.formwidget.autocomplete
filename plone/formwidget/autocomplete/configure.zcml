@@ -6,6 +6,7 @@
 
     <include package="plone.z3cform" />
     <include package="Products.GenericSetup" file="meta.zcml" />
+    <include package="collective.js.jqueryui" />
 
     <browser:page
         name="autocomplete-search"
