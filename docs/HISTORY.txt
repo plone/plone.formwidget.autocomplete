@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.1 (unreleased)
+------------------
+
+* Explicitly include CMFCore's zcml in demo.zcml, for compatibility
+  with Zope 2.13.
+  [davisagli]
+
 1.1 (2010-08-25)
 ----------------
 
