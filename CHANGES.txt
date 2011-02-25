@@ -4,6 +4,10 @@ Changelog
 1.2.0 (unreleased)
 ------------------
 
+* No longer include the `demo.zcml` by default, but rather allow users to
+  include it if needed.
+  [hannosch]
+
 * Update distribution metadata.
   [hannosch]
 
