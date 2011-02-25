@@ -4,6 +4,9 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
+* Remove direct `zope.app` dependencies.
+  [hannosch]
+
 * Use the correct ViewPageTemplateFile from Five required in a Zope 2 context.
   [hannosch]
 
