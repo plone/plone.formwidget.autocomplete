@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.2 (unreleased)
+------------------
+
+* Use the correct ViewPageTemplateFile from Five required in a Zope 2 context.
+  [hannosch]
+
 1.1.1 (2011-02-11)
 ------------------
 

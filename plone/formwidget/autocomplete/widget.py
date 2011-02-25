@@ -1,4 +1,4 @@
-from zope.interface import implements, implementsOnly, implementer
+from zope.interface import implementsOnly, implementer
 
 import z3c.form.interfaces
 import z3c.form.widget
@@ -9,12 +9,12 @@ from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
 
 from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-
 from AccessControl import getSecurityManager
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
 from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
 
 class AutocompleteSearch(BrowserView):
     
@@ -49,7 +49,6 @@ class AutocompleteSearch(BrowserView):
         self.validate_access()
         
         query = self.request.get('q', None)
-        limit = self.request.get('limit', None)
         if not query:
             return ''
 
