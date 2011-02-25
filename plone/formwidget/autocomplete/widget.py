@@ -1,19 +1,16 @@
-from zope.interface import implementsOnly, implementer
-
-import z3c.form.interfaces
-import z3c.form.widget
-import z3c.form.util
-
-from z3c.formwidget.query.widget import QuerySourceRadioWidget
-from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
-
-from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
-
 from AccessControl import getSecurityManager
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+import z3c.form.interfaces
+import z3c.form.widget
+import z3c.form.util
+from z3c.formwidget.query.widget import QuerySourceRadioWidget
+from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
+from zope.interface import implementsOnly, implementer
+
+from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 
 
 class AutocompleteSearch(BrowserView):
@@ -39,7 +36,8 @@ class AutocompleteSearch(BrowserView):
             view_name = '@@' + view_name
 
         view_instance = content.restrictedTraverse(view_name)
-        getSecurityManager().validate(content, content, view_name, view_instance)
+        sm = getSecurityManager()
+        sm.validate(content, content, view_name, view_instance)
 
     def __call__(self):
 
@@ -64,8 +62,9 @@ class AutocompleteSearch(BrowserView):
         else:
             terms = set()
 
-        return '\n'.join(["%s|%s" % (t.token,  t.title or t.token)
+        return '\n'.join(["%s|%s" % (t.token, t.title or t.token)
                             for t in sorted(terms, key=lambda t: t.title)])
+
 
 class AutocompleteBase(Explicit):
     implementsOnly(IAutocompleteWidget)
@@ -145,25 +144,21 @@ class AutocompleteBase(Explicit):
         form_prefix = self.form.prefix + self.__parent__.prefix
         widget_name = self.name[len(form_prefix):]
 
-        url = "%s/++widget++%s/@@autocomplete-search" % (form_url, widget_name,)
+        url = "%s/++widget++%s/@@autocomplete-search" % (
+            form_url, widget_name, )
 
         js_callback = self.js_callback_template % dict(id=self.id,
-                                                       name=self.name,
-                                                       klass=self.klass,
-                                                       title=self.title,
-                                                       termCount=len(self.terms))
+            name=self.name, klass=self.klass, title=self.title,
+            termCount=len(self.terms))
 
-        return self.js_template % dict(id=self.id,
-                                       url=url,
-                                       autoFill=str(self.autoFill).lower(),
-                                       minChars=self.minChars,
-                                       maxResults=self.maxResults,
-                                       mustMatch=str(self.mustMatch).lower(),
-                                       matchContains=str(self.matchContains).lower(),
-                                       formatItem=self.formatItem,
-                                       formatResult=self.formatResult,
-                                       js_callback=js_callback,
-                                       js_extra=self.js_extra())
+        return self.js_template % dict(id=self.id, url=url,
+            autoFill=str(self.autoFill).lower(),
+            minChars=self.minChars, maxResults=self.maxResults,
+            mustMatch=str(self.mustMatch).lower(),
+            matchContains=str(self.matchContains).lower(),
+            formatItem=self.formatItem, formatResult=self.formatResult,
+            js_callback=js_callback, js_extra=self.js_extra())
+
 
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.
@@ -172,7 +167,9 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     klass = u'autocomplete-selection-widget'
     display_template = ViewPageTemplateFile('display.pt')
 
-class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidget):
+
+class AutocompleteMultiSelectionWidget(AutocompleteBase,
+                                       QuerySourceCheckboxWidget):
     """Autocomplete widget that allows multiple selection
     """
 
@@ -193,10 +190,14 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     }
     """
 
+
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteFieldWidget(field, request):
-    return z3c.form.widget.FieldWidget(field, AutocompleteSelectionWidget(request))
+    return z3c.form.widget.FieldWidget(field,
+        AutocompleteSelectionWidget(request))
+
 
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteMultiFieldWidget(field, request):
-    return z3c.form.widget.FieldWidget(field, AutocompleteMultiSelectionWidget(request))
+    return z3c.form.widget.FieldWidget(field,
+        AutocompleteMultiSelectionWidget(request))
