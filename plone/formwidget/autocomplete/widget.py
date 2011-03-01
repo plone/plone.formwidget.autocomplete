@@ -107,7 +107,7 @@ class AutocompleteBase(Explicit):
     function htmlDecode(input){
         var e = document.createElement('div');
         e.innerHTML = input;
-        return e.childNodes[0].nodeValue;
+        return e.childNodes[0];
     }
 
     (function($) {
