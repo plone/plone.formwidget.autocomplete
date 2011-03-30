@@ -6,7 +6,12 @@
 
     function formwidget_autocomplete_ready(event, data, formatted) {
         var input_box = $(event.target);
+        formwidget_autocomplete_new_value(input_box,data[0],data[1]);
+    }
+
+    function formwidget_autocomplete_new_value(input_box,value,label) {
         var base_id = input_box[0].id.replace(/-widgets-query$/,"");
+        var base_name = input_box[0].name.replace(/\.widgets\.query$/,"");
         var widget_base = $('#'+base_id+"-input-fields");
 
         var all_fields = widget_base.find('input:radio, input:checkbox');
@@ -16,29 +21,29 @@
         widget_base.find('input:radio').attr('checked', '');
         
         // If a radio/check box for this value already exists, check it.
-        var selected_field = $('#'+base_id+'-input-fields input[value="' + data[0] + '"]');
+        var selected_field = widget_base.find('input[value="' + value + '"]');
         if(selected_field.length) {
             selected_field.each(function() { this.checked = true; });
             return;
         }
 
+        widget_base, base_name, base_id
         // Create the box for this value
         var idx = all_fields.length;
         var klass = widget_base.data('klass');
         var title = widget_base.data('title');
         var type = widget_base.data('input_type');
-        var name = input_box[0].name.replace(/\.widgets\.query$/,":list"); //TODO: Is this safe?
         var span = $('<span/>').attr("id",base_id+"-"+idx+"-wrapper").attr("class","option");
         span.append($("<label/>").attr("for",base_id+"-"+idx)
                                  .append($('<input>').attr("type",type)
                                                      .attr("id",base_id+"-"+idx)
-                                                     .attr("name",name)
+                                                     .attr("name",base_name+":list")
                                                      .attr("class",klass)
                                                      .attr("title",title)
                                                      .attr("checked","checked")
-                                                     .attr("value",data[0])
+                                                     .attr("value",value)
                                                      )
-                                 .append($("<span>").attr("class","label").text(data[1]))
+                                 .append($("<span>").attr("class","label").text(label))
                                  );
-        $('#'+base_id+'-input-fields').append(span);
+        widget_base.append(span);
     }

@@ -4,6 +4,10 @@ Changelog
 1.2.0 (unreleased)
 ------------------
 
+* Split input:radio adding function so the code can be reused when adding
+  in plone.formwidget.contenttree
+  [lentinj]
+
 * Move the javascript callback to real code, so instances of the widget
   can be added to the page by cloning existing widgets
   [lentinj]
