@@ -4,5 +4,8 @@
   <javascript id="++resource++plone.formwidget.autocomplete/jquery.autocomplete.min.js" 
       cacheable="True" compression="none" cookable="True" enabled="True"
       expression="" inline="False" />
+  <javascript id="++resource++plone.formwidget.autocomplete/formwidget-autocomplete.js" 
+      cacheable="True" compression="safe" cookable="True" enabled="True"
+      expression="" inline="False" />
 
 </object>

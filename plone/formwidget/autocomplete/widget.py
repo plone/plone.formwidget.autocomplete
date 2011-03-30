@@ -86,32 +86,10 @@ class AutocompleteBase(Explicit):
     formatResult = 'function(row, idx, count) { return ""; }'
 
     # JavaScript template
-
-    # the funny <" + "input bit is to prevent breakage in testbrowser tests
-    # when it parses the js as a real input, but with a bogus value
-    js_callback_template = """\
-    function(event, data, formatted) {
-        var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
-        $('#%(id)s-input-fields input[type=radio]').attr('checked', '');
-        if(field.length == 0) {
-            $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + data[1] + "</span></label></span>"));
-        } else {
-            field.each(function() { this.checked = true });
-        }
-        $('#%(id)s-widgets-query').each(function() { this.value = "" });
-    }
-    """
-
     js_template = """\
-    function htmlDecode(input){
-        var e = document.createElement('div');
-        e.innerHTML = input;
-        return e.childNodes[0];
-    }
-
     (function($) {
         $().ready(function() {
+            $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s');
             $('#%(id)s-buttons-search').remove();
             $('#%(id)s-widgets-query').autocomplete('%(url)s', {
                 autoFill: %(autoFill)s,
@@ -137,26 +115,32 @@ class AutocompleteBase(Explicit):
         else:
             return self.input_template(self)
 
-    def js(self):
-
+    def autocomplete_url(self):
+        """Generate the URL that returns autocomplete results for this form
+        """
         form_url = self.request.getURL()
 
         form_prefix = self.form.prefix + self.__parent__.prefix
         widget_name = self.name[len(form_prefix):]
 
-        url = "%s/++widget++%s/@@autocomplete-search" % (
+        return "%s/++widget++%s/@@autocomplete-search" % (
             form_url, widget_name, )
+    
+    def js(self):
+        # Use a template if it exists, in case anything overrode this interface
+        js_callback = 'formwidget_autocomplete_ready'
+        if hasattr(self,'js_callback_template'):
+            js_callback = self.js_callback_template % dict(id=self.id,
+                name=self.name, klass=self.klass, title=self.title,
+                termCount=len(self.terms))
 
-        js_callback = self.js_callback_template % dict(id=self.id,
-            name=self.name, klass=self.klass, title=self.title,
-            termCount=len(self.terms))
-
-        return self.js_template % dict(id=self.id, url=url,
+        return self.js_template % dict(id=self.id, url=self.autocomplete_url(),
             autoFill=str(self.autoFill).lower(),
             minChars=self.minChars, maxResults=self.maxResults,
             mustMatch=str(self.mustMatch).lower(),
             matchContains=str(self.matchContains).lower(),
             formatItem=self.formatItem, formatResult=self.formatResult,
+            klass=self.klass, title=self.title, input_type=self.input_type,
             js_callback=js_callback, js_extra=self.js_extra())
 
 
@@ -165,6 +149,7 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """
 
     klass = u'autocomplete-selection-widget'
+    input_type = 'radio'
     display_template = ViewPageTemplateFile('display.pt')
 
 
@@ -174,22 +159,8 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase,
     """
 
     klass = u'autocomplete-multiselection-widget'
+    input_type = 'checkbox'
     display_template = ViewPageTemplateFile('display.pt')
-
-    # the funny <" + "input bit is to prevent breakage in testbrowser tests
-    # when it parses the js as a real input, but with a bogus value
-    js_callback_template = """\
-    function(event, data, formatted) {
-        var field = $('#%(id)s-input-fields input[value="' + data[0] + '"]');
-        if(field.length == 0) {
-            var itemCount = $('#%(id)s-input-fields input').length;
-            $('#%(id)s-input-fields').append("<span id='%(id)s-" + itemCount + "-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-" + itemCount + "' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + data[0] + "' /><label for='%(id)s-" + itemCount + "'><span class='label'>" + data[1] + "</span></label></span>");
-        } else {
-            field.each(function() { this.checked = true });
-        }
-    }
-    """
-
 
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteFieldWidget(field, request):

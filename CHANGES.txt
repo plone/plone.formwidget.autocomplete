@@ -4,6 +4,13 @@ Changelog
 1.2.0 (unreleased)
 ------------------
 
+* Move the javascript callback to real code, so instances of the widget
+  can be added to the page by cloning existing widgets
+  [lentinj]
+
+* Allow overriding of the autocomplete URL
+  [lentinj]
+
 * Fix htmlDecode to return an element, not the nodeValue of an element which
   is null.
   [ggozad]
