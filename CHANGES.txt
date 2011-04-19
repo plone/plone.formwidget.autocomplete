@@ -4,6 +4,10 @@ Changelog
 1.2.0 (unreleased)
 ------------------
 
+* Add upgrade step to register formwidget-autocomplete.js, bumping profile
+  version to 1
+  [lentinj]
+
 * Split input:radio adding function so the code can be reused when adding
   in plone.formwidget.contenttree
   [lentinj]

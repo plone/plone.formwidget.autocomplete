@@ -6,6 +6,7 @@
 
     <include package="plone.z3cform" />
     <include package="Products.GenericSetup" file="meta.zcml" />
+    <include package=".upgrades" />
 
     <browser:page
         name="autocomplete-search"
