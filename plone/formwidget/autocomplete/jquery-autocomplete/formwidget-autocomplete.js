@@ -1,15 +1,12 @@
-    function htmlDecode(input){
-        var e = document.createElement('div');
-        e.innerHTML = input;
-        return e.childNodes[0];
-    }
-
-    function formwidget_autocomplete_ready(event, data, formatted) {
+function formwidget_autocomplete_ready(event, data, formatted) {
+    (function($) { 
         var input_box = $(event.target);
         formwidget_autocomplete_new_value(input_box,data[0],data[1]);
-    }
+    }(jQuery));
+}
 
-    function formwidget_autocomplete_new_value(input_box,value,label) {
+function formwidget_autocomplete_new_value(input_box,value,label) {
+    (function($) { 
         var base_id = input_box[0].id.replace(/-widgets-query$/,"");
         var base_name = input_box[0].name.replace(/\.widgets\.query$/,"");
         var widget_base = $('#'+base_id+"-input-fields");
@@ -46,4 +43,5 @@
                                  .append($("<span>").attr("class","label").text(label))
                                  );
         widget_base.append(span);
-    }
+    }(jQuery));
+}
