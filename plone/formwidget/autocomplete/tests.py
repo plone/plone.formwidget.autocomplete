@@ -1,7 +1,7 @@
 import doctest
 import unittest
 
-from Testing.ZopeTestCase.layer import ZopeLite
+from Products.PloneTestCase.layer import ZCMLLayer as BaseZCMLLayer
 
 # BBB for Zope 2.12
 try:
@@ -10,7 +10,7 @@ except ImportError:
     from Products.Five import zcml
 
 
-class ZCMLLayer(ZopeLite):
+class ZCMLLayer(BaseZCMLLayer):
 
     @classmethod
     def testSetUp(cls):
