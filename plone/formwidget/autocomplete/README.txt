@@ -46,16 +46,20 @@ z3c.formwidget.query, which we extend.
 Then, we will set up a simple test form and context.
 
     >>> from zope.interface import alsoProvides
-    >>> from zope.publisher.browser import TestRequest
+    >>> from OFS.SimpleItem import SimpleItem
+    >>> from Testing.makerequest import makerequest
     >>> from zope.annotation.interfaces import IAttributeAnnotatable
     >>> from z3c.form.interfaces import IFormLayer
 
     >>> def make_request(path, form={}):
-    ...     request = TestRequest()
+    ...     app = SimpleItem('')
+    ...     request = makerequest(app).REQUEST
     ...     request.form.update(form)
     ...     alsoProvides(request, IFormLayer)
     ...     alsoProvides(request, IAttributeAnnotatable)
-    ...     request._traversed_names = path.split('/')
+    ...     request._script = path.split('/')
+    ...     request._steps = []
+    ...     request._resetURLS()
     ...     return request
 
     >>> from zope.interface import Interface
@@ -94,13 +98,16 @@ Then, we will set up a simple test form and context.
     ...                factory=form_view,
     ...                name=u"cities-form")
 
-    >>> class Bar(object):
+    >>> from OFS.SimpleItem import SimpleItem
+    >>> class Bar(SimpleItem):
     ...     implements(ICities)
     ...     
     ...     def __init__(self, id):
     ...         self.id = id
     ...         self.favourite_city = None
     ...         self.visited_cities = []
+    ...     def absolute_url(self):
+    ...         return 'http://foo/bar'
 
 Let us now look up the form and attempt to render the widget.
 
@@ -110,6 +117,8 @@ Let us now look up the form and attempt to render the widget.
 Simulates traversal:
 
     >>> request = make_request('bar/@@cities-form')
+    >>> from Testing.makerequest import makerequest
+    >>> context = makerequest(context)
     >>> form_view = getMultiAdapter((context, request), name=u"cities-form")
     >>> form_view.__name__ = 'cities-form'
 
@@ -120,12 +129,12 @@ Simulates partial rendering:
     >>> form.update()
     >>> print form.widgets['favourite_city'].render() # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     <script type="text/javascript">
-    ... $('#form-widgets-favourite_city-widgets-query').autocomplete('http://127.0.0.1/bar/@@cities-form/++widget++favourite_city/@@autocomplete-search', {
+    ... $('#form-widgets-favourite_city-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++favourite_city/@@autocomplete-search', {
     ...
 
     >>> print form.widgets['visited_cities'].render() # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
     <script type="text/javascript">
-    ... $('#form-widgets-visited_cities-widgets-query').autocomplete('http://127.0.0.1/bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {
+    ... $('#form-widgets-visited_cities-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {
     ...
     
 Above, we can see that the rendered JavaScript is expecting to call a view
@@ -133,7 +142,9 @@ Above, we can see that the rendered JavaScript is expecting to call a view
 like this:
     
     >>> widget = form.widgets['favourite_city']
-    >>> query_request = make_request('http://127.0.0.1/bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {'q': 'or'})
+    >>> context.REQUEST._script = 'bar/@@cities-form/++widget++visited_cities/@@autocomplete-search'.split('/')
+    >>> context.REQUEST._resetURLS()
+    >>> query_request = make_request('bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {'q': 'or'})
     >>> search_view = getMultiAdapter((widget, query_request), name=u'autocomplete-search')
     >>> print search_view()
     sorrento|Sorrento

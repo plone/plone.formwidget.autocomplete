@@ -1,6 +1,8 @@
 from AccessControl import getSecurityManager
+from AccessControl import ClassSecurityInfo
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
+from App.class_init import InitializeClass
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 import z3c.form.interfaces
@@ -68,6 +70,9 @@ class AutocompleteSearch(BrowserView):
 
 class AutocompleteBase(Explicit):
     implementsOnly(IAutocompleteWidget)
+
+    security = ClassSecurityInfo()
+    security.declareObjectPublic()
 
     # XXX: Due to the way the rendering of the QuerySourceRadioWidget works,
     # if we call this 'template' or use a <z3c:widgetTemplate /> directive,
@@ -142,6 +147,9 @@ class AutocompleteBase(Explicit):
             formatItem=self.formatItem, formatResult=self.formatResult,
             klass=self.klass, title=self.title, input_type=self.input_type,
             js_callback=js_callback, js_extra=self.js_extra())
+
+
+InitializeClass(AutocompleteBase)
 
 
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
