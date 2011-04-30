@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.0 (unreleased)
+1.2.0 (2011-04-30)
 ------------------
 
 * Add upgrade step to register formwidget-autocomplete.js, bumping profile
