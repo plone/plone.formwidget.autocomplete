@@ -4,6 +4,9 @@ Changelog
 1.2.1 (unreleased)
 ------------------
 
+* Use full widget name in ++widget++ path, don't try and remove form prefix
+  (which will not behave correctly if widget is part of a subform).
+  [lentinj]
 
 1.2.0 (2011-04-30)
 ------------------

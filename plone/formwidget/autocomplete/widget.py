@@ -125,11 +125,8 @@ class AutocompleteBase(Explicit):
         """
         form_url = self.request.getURL()
 
-        form_prefix = self.form.prefix + self.__parent__.prefix
-        widget_name = self.name[len(form_prefix):]
-
         return "%s/++widget++%s/@@autocomplete-search" % (
-            form_url, widget_name, )
+            form_url, self.name )
     
     def js(self):
         # Use a template if it exists, in case anything overrode this interface

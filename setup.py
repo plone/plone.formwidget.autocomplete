@@ -27,7 +27,7 @@ setup(name='plone.formwidget.autocomplete',
       install_requires=[
           'setuptools',
           'z3c.formwidget.query',
-          'plone.z3cform',
+          'plone.z3cform >= 0.7.4',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]
