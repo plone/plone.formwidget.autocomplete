@@ -129,12 +129,12 @@ Simulates partial rendering:
     >>> form.update()
     >>> print form.widgets['favourite_city'].render() # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     <script type="text/javascript">
-    ... $('#form-widgets-favourite_city-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++favourite_city/@@autocomplete-search', {
+    ... $('#form-widgets-favourite_city-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++form.widgets.favourite_city/@@autocomplete-search', {
     ...
 
     >>> print form.widgets['visited_cities'].render() # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
     <script type="text/javascript">
-    ... $('#form-widgets-visited_cities-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {
+    ... $('#form-widgets-visited_cities-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++form.widgets.visited_cities/@@autocomplete-search', {
     ...
     
 Above, we can see that the rendered JavaScript is expecting to call a view
@@ -142,9 +142,9 @@ Above, we can see that the rendered JavaScript is expecting to call a view
 like this:
     
     >>> widget = form.widgets['favourite_city']
-    >>> context.REQUEST._script = 'bar/@@cities-form/++widget++visited_cities/@@autocomplete-search'.split('/')
+    >>> context.REQUEST._script = 'bar/@@cities-form/++widget++form.widgets.visited_cities/@@autocomplete-search'.split('/')
     >>> context.REQUEST._resetURLS()
-    >>> query_request = make_request('bar/@@cities-form/++widget++visited_cities/@@autocomplete-search', {'q': 'or'})
+    >>> query_request = make_request('bar/@@cities-form/++widget++form.widgets.visited_cities/@@autocomplete-search', {'q': 'or'})
     >>> search_view = getMultiAdapter((widget, query_request), name=u'autocomplete-search')
     >>> print search_view()
     sorrento|Sorrento
