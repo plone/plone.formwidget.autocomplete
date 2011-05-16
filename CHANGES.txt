@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.1 (unreleased)
+1.2.1 (2011-05-16)
 ------------------
 
 * Use full widget name in ++widget++ path, don't try and remove form prefix
