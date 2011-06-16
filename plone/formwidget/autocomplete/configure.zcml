@@ -9,6 +9,7 @@
     <include package="Products.GenericSetup" file="meta.zcml" />
     <include package=".upgrades" />
     <include package="collective.js.jqueryui" />
+    <include package=".upgrades" />
 
     <i18n:registerTranslations directory="locales" />
 
