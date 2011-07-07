@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.2 (unreleased)
+------------------
+
+* Add whitespace after autocreated radio buttons, fixing alignment:
+  http://code.google.com/p/dexterity/issues/detail?id=193 (thanks davidjb)
+  [lentinj]
+
 1.2.1 (2011-05-16)
 ------------------
 

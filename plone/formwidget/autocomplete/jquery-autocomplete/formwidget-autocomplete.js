@@ -40,6 +40,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
                                                      .attr("checked","checked")
                                                      .attr("value",value)
                                                      )
+                                 .append(" ")
                                  .append($("<span>").attr("class","label").text(label))
                                  );
         widget_base.append(span);
