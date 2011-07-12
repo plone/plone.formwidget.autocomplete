@@ -113,6 +113,7 @@ class AutocompleteBase(Explicit):
     }
 
     jq(function($) {
+        $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s');
         $('#%(id)s-buttons-search').remove();
         $('#%(id)s-widgets-query').autocomplete({
             source: '%(url)s',
@@ -147,11 +148,11 @@ class AutocompleteBase(Explicit):
                                                        klass=self.klass,
                                                        title=self.title,
                                                        termCount=len(self.terms))
-
         return self.js_template % dict(id=self.id,
                                        url=url,
                                        minLength=self.minLength,
                                        js_callback=js_callback,
+                                       klass=self.klass, title=self.title, input_type=self.input_type,
                                        js_extra=self.js_extra())
 
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
@@ -159,6 +160,7 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """
 
     klass = u'autocomplete-selection-widget'
+    input_type = 'radio'
     display_template = ViewPageTemplateFile('display.pt')
 
 class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidget):
@@ -166,6 +168,7 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidg
     """
 
     klass = u'autocomplete-multiselection-widget'
+    input_type = 'checkbox'
     display_template = ViewPageTemplateFile('display.pt')
 
     # the funny <" + "input bit is to prevent breakage in testbrowser tests

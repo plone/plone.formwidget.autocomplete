@@ -27,6 +27,11 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <browser:resource
+      name="formwidget-autocomplete.js"
+      file="resources/formwidget-autocomplete.js"
+      />
+
     <!-- Demo view for testing -->
     <include file="demo.zcml" />
 
