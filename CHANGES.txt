@@ -4,6 +4,12 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+* Include CMF permissions in ZCML for Plone 4.1 compatibility.
+  [buchi]
+
+* Added formwidget-autocomplete.js to JS registry
+  [lgraf]
+
 * Use newer jQuery UI implementation of the autocomplete widget.
   [jbaumann]
 
