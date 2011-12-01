@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+* Also show the item's value (in braces) in the popup list.
+  [buchi]
+
 * Include CMF permissions in ZCML for Plone 4.1 compatibility.
   [buchi]
 

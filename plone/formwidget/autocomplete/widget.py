@@ -122,7 +122,12 @@ class AutocompleteBase(Explicit):
             source: '%(url)s',
             minLength: %(minLength)d,
             select: %(js_callback)s
-        });
+        }).data("autocomplete")._renderItem = function(ul, item) {
+            return $("<li></li>")
+                .data("item.autocomplete", item)
+                .append("<a>" + item.label + " (" + item.value + ")</a>")
+                .appendTo(ul);
+        };
         %(js_extra)s
     });
     """
