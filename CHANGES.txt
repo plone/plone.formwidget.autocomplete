@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+* Show the label of the focused item in the input field.
+  [buchi]
+
 * Also show the item's value (in braces) in the popup list.
   [buchi]
 

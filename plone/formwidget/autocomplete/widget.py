@@ -121,7 +121,11 @@ class AutocompleteBase(Explicit):
         $('#%(id)s-widgets-query').autocomplete({
             source: '%(url)s',
             minLength: %(minLength)d,
-            select: %(js_callback)s
+            select: %(js_callback)s,
+            focus: function(event, ui) {
+                $('#%(id)s-widgets-query').val(ui.item.label);
+                return false;
+            }
         }).data("autocomplete")._renderItem = function(ul, item) {
             return $("<li></li>")
                 .data("item.autocomplete", item)
