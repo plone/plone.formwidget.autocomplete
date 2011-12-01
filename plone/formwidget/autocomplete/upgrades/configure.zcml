@@ -2,13 +2,31 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
 
-  <genericsetup:upgradeStep
-    source="unknown"
-    destination="1"
-    title="Install formwidget-autocomplete javascript"
-    description=""
-    profile="plone.formwidget.autocomplete:default"
-    handler=".to1.install_formwidget_autocomplete"
+    <genericsetup:registerProfile
+        name="to_v2"
+        title="Upgrade profile for plone.formwidget.autocomplete v1 to v2"
+        description="This profile upgrades to jQuery UI based autocomplete"
+        directory="to_v2"
+        for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <genericsetup:upgradeStep
+        source="unknown"
+        destination="1"
+        title="Install formwidget-autocomplete javascript"
+        description=""
+        profile="plone.formwidget.autocomplete:default"
+        handler=".to1.install_formwidget_autocomplete"
+    />
+
+    <genericsetup:upgradeStep
+        source="1"
+        destination="2"
+        title="Upgrade plone.formwidget.autocomplete"
+        description=""
+        profile="plone.formwidget.autocomplete:default"
+        handler=".to_v2.upgrade"
     />
 
 </configure>

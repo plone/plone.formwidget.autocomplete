@@ -4,6 +4,10 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+* Added upgrade profile to remove no longer used js and css in ressource
+  registries.
+  [buchi]
+
 * Show the label of the focused item in the input field.
   [buchi]
 
