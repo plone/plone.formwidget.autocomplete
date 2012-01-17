@@ -1,3 +1,5 @@
+import json
+
 from AccessControl import getSecurityManager
 from AccessControl import ClassSecurityInfo
 from Acquisition import Explicit
@@ -48,7 +50,7 @@ class AutocompleteSearch(BrowserView):
         # applied yet during traversal.
         self.validate_access()
 
-        query = self.request.get('q', None)
+        query = self.request.get('term', None)
         if not query:
             return ''
 
@@ -64,8 +66,8 @@ class AutocompleteSearch(BrowserView):
         else:
             terms = set()
 
-        return '\n'.join(["%s|%s" % (t.token, t.title or t.token)
-                            for t in sorted(terms, key=lambda t: t.title)])
+#        import ipdb; ipdb.set_trace()
+        return json.dumps([{'label': t.title, 'value': t.token} for t in sorted(terms, key=lambda t: t.title)])
 
 
 class AutocompleteBase(Explicit):
@@ -82,13 +84,7 @@ class AutocompleteBase(Explicit):
     display_template = None # set by subclass
 
     # Options passed to jQuery auto-completer
-    autoFill = True
-    minChars = 2
-    maxResults = 10
-    mustMatch = True
-    matchContains = True
-    formatItem = 'function(row, idx, count, value) { return row[1]; }'
-    formatResult = 'function(row, idx, count) { return ""; }'
+    minLength = 2
 
     # JavaScript template
     js_template = """\
@@ -96,15 +92,11 @@ class AutocompleteBase(Explicit):
         $().ready(function() {
             $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s');
             $('#%(id)s-buttons-search').remove();
-            $('#%(id)s-widgets-query').autocomplete('%(url)s', {
-                autoFill: %(autoFill)s,
-                minChars: %(minChars)d,
-                max: %(maxResults)d,
-                mustMatch: %(mustMatch)s,
-                matchContains: %(matchContains)s,
-                formatItem: %(formatItem)s,
-                formatResult: %(formatResult)s
-            }).result(%(js_callback)s);
+            $('#%(id)s-widgets-query').autocomplete({
+                source: '%(url)s',
+                minLength: %(minLength)d,
+                select: %(js_callback)s,
+            });
             %(js_extra)s
         });
     })(jQuery);
@@ -130,18 +122,14 @@ class AutocompleteBase(Explicit):
     
     def js(self):
         # Use a template if it exists, in case anything overrode this interface
-        js_callback = 'formwidget_autocomplete_ready'
+        js_callback = 'formwidget_autocomplete_new_value'
         if hasattr(self,'js_callback_template'):
             js_callback = self.js_callback_template % dict(id=self.id,
                 name=self.name, klass=self.klass, title=self.title,
                 termCount=len(self.terms))
 
         return self.js_template % dict(id=self.id, url=self.autocomplete_url(),
-            autoFill=str(self.autoFill).lower(),
-            minChars=self.minChars, maxResults=self.maxResults,
-            mustMatch=str(self.mustMatch).lower(),
-            matchContains=str(self.matchContains).lower(),
-            formatItem=self.formatItem, formatResult=self.formatResult,
+            minLength=self.minLength,
             klass=self.klass, title=self.title, input_type=self.input_type,
             js_callback=js_callback, js_extra=self.js_extra())
 

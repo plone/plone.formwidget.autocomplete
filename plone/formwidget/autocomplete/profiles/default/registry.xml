@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<registry>
+    <records interface="collective.js.jqueryui.controlpanel.IJQueryUIPlugins">
+      <value key="ui_autocomplete">True</value>
+    </records>
+</registry>

@@ -11,4 +11,22 @@
     handler=".to1.install_formwidget_autocomplete"
     />
 
+  <genericsetup:upgradeStep
+    source="1"
+    destination="2"
+    title="Remove obsolete JS and CSS registrations"
+    description=""
+    profile="plone.formwidget.autocomplete:default"
+    handler=".to2.remove_obsolete_js_and_css"
+    />
+
+  <genericsetup:upgradeStep
+    source="1"
+    destination="2"
+    title="Enable jQueryUI plugin"
+    description=""
+    profile="plone.formwidget.autocomplete:default"
+    handler=".to2.enable_jqueryui_plugin"
+    />
+
 </configure>
