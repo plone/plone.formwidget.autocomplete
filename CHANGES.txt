@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.3 (unreleased)
+1.2.3 (2012-02-13)
 ------------------
 
 * Fix <input /> element generation for Internet Explorer; in most cases, the
