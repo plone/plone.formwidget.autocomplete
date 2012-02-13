@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+* Fix <input /> element generation for Internet Explorer; in most cases, the
+  generated element would be lacking the name attribute.
+  [mj]
 
 1.2.2 (2011-09-24)
 ------------------
