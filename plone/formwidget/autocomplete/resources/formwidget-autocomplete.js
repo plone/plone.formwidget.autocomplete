@@ -31,17 +31,20 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         var title = widget_base.data('title');
         var type = widget_base.data('input_type');
         var span = $('<span/>').attr("id",base_id+"-"+idx+"-wrapper").attr("class","option");
+        var checkbox = $('<input>').attr("type",type)
+                                   .attr("id",base_id+"-"+idx)
+                                   .attr("name",base_name+":list")
+                                   .attr("class",klass)
+                                   .attr("title",title)
+                                   .attr("value",value);
         span.append($("<label/>").attr("for",base_id+"-"+idx)
-                                 .append($('<input>').attr("type",type)
-                                                     .attr("id",base_id+"-"+idx)
-                                                     .attr("name",base_name+":list")
-                                                     .attr("class",klass)
-                                                     .attr("title",title)
-                                                     .attr("checked","checked")
-                                                     .attr("value",value)
-                                                     )
+                                 .append(checkbox)
                                  .append($("<span>").attr("class","label").text(label))
                                  );
         widget_base.append(span);
+
+        // On IE7 the checked attribute has to be set after the element is added to the DOM
+        // see http://stackoverflow.com/a/579156
+        checkbox.attr("checked", "checked")
     }(jQuery));
 }
