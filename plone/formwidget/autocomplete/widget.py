@@ -89,7 +89,7 @@ class AutocompleteBase(Explicit):
     matchContains = True
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
     formatResult = 'function(row, idx, count) { return ""; }'
-    parseFunction = 'formwidget_autocomplete_parser('+formatResult+', 0)'
+    parseFunction = 'formwidget_autocomplete_parser('+formatResult+', 1)'
 
     # JavaScript template
     js_template = """\
