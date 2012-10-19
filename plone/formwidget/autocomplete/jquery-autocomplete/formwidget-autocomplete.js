@@ -50,3 +50,23 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         widget_base.append(span);
     }(jQuery));
 }
+
+// Generate a result-parsing function that picks out fieldNum as the value
+function formwidget_autocomplete_parser(formatResult, fieldNum) {
+	return function(data) {
+		var parsed = [];
+		var rows = data.split("\n");
+		for (var i=0; i < rows.length; i++) {
+			var row = $.trim(rows[i]);
+			if (row) {
+				row = row.split("|");
+				parsed[parsed.length] = {
+					data: row,
+					value: row[fieldNum],
+					result: formatResult(row, row[fieldNum])
+				};
+			}
+		}
+		return parsed;
+	};
+}

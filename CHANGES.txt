@@ -4,6 +4,14 @@ Changelog
 1.2.4 (unreleased)
 ------------------
 
+* Switch the default parser to use the title as the value, so that titles
+  are used to autocomplete what's in the text input box.
+  [lentinj]
+
+* Add a custom parse function that defaults to an identical function to the
+  default one.
+  [lentinj]
+
 1.2.3 (2012-02-13)
 ------------------
 
