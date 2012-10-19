@@ -89,6 +89,7 @@ class AutocompleteBase(Explicit):
     matchContains = True
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
     formatResult = 'function(row, idx, count) { return ""; }'
+    parseFunction = 'formwidget_autocomplete_parser('+formatResult+', 0)'
 
     # JavaScript template
     js_template = """\
@@ -103,7 +104,8 @@ class AutocompleteBase(Explicit):
                 mustMatch: %(mustMatch)s,
                 matchContains: %(matchContains)s,
                 formatItem: %(formatItem)s,
-                formatResult: %(formatResult)s
+                formatResult: %(formatResult)s,
+                parse: %(parseFunction)s
             }).result(%(js_callback)s);
             %(js_extra)s
         });
@@ -142,6 +144,7 @@ class AutocompleteBase(Explicit):
             mustMatch=str(self.mustMatch).lower(),
             matchContains=str(self.matchContains).lower(),
             formatItem=self.formatItem, formatResult=self.formatResult,
+            parseFunction=self.parseFunction,
             klass=self.klass, title=self.title, input_type=self.input_type,
             js_callback=js_callback, js_extra=self.js_extra())
 
