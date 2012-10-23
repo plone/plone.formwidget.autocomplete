@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.2.4dev'
+version = '1.2.4'
 
 setup(name='plone.formwidget.autocomplete',
       version=version,
