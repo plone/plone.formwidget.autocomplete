@@ -15,7 +15,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         
         // Clear query box and uncheck any radio boxes
         input_box.val("");
-        widget_base.find('input:radio').attr('checked', '');
+        widget_base.find('input:radio').prop('checked', false);
         
         // If a radio/check box for this value already exists, check it.
         var selected_field = widget_base.find('input[value="' + value + '"]');
