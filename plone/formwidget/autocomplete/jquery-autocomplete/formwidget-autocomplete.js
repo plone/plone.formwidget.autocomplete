@@ -55,18 +55,22 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
 function formwidget_autocomplete_parser(formatResult, fieldNum) {
 	return function(data) {
 		var parsed = [];
-		var rows = data.split("\n");
-		for (var i=0; i < rows.length; i++) {
-			var row = $.trim(rows[i]);
-			if (row) {
-				row = row.split("|");
-				parsed[parsed.length] = {
-					data: row,
-					value: row[fieldNum],
-					result: formatResult(row, row[fieldNum])
-				};
-			}
-		}
+        // If the server responds with 204 No Content, then data will not
+        // be a string.
+        if(data.split){
+            var rows = data.split("\n");
+            for (var i=0; i < rows.length; i++) {
+                var row = $.trim(rows[i]);
+                if (row) {
+                    row = row.split("|");
+                    parsed[parsed.length] = {
+                        data: row,
+                        value: row[fieldNum],
+                        result: formatResult(row, row[fieldNum])
+                    };
+                }
+            }
+        }
 		return parsed;
 	};
 }
