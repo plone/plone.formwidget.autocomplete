@@ -15,7 +15,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         
         // Clear query box and uncheck any radio boxes
         input_box.val("");
-        widget_base.find('input:radio').attr('checked', '');
+        widget_base.find('input:radio').prop('checked', false);
         
         // If a radio/check box for this value already exists, check it.
         var selected_field = widget_base.find('input[value="' + value + '"]');
@@ -30,6 +30,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         var klass = widget_base.data('klass');
         var title = widget_base.data('title');
         var type = widget_base.data('input_type');
+        var multiple = widget_base.data('multiple');
         var span = $('<span/>').attr("id",base_id+"-"+idx+"-wrapper").attr("class","option");
         // Note that Internet Explorer will usually *not* let you set the name via setAttribute.
         // Also, setting the type after adding a input to the DOM is also not allowed.
@@ -37,7 +38,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         // so we generate this one as text as well.
         span.append($("<label/>").attr("for",base_id+"-"+idx)
                                  .append($('<input type="' + type + '"' +
-                                                ' name="' + base_name + ':list"' +
+                                                ' name="' + base_name + (multiple?':list"':'"') +
                                                 ' checked="checked" />')
                                             .attr("id",base_id+"-"+idx)
                                             .attr("title",title)
@@ -55,18 +56,22 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
 function formwidget_autocomplete_parser(formatResult, fieldNum) {
 	return function(data) {
 		var parsed = [];
-		var rows = data.split("\n");
-		for (var i=0; i < rows.length; i++) {
-			var row = $.trim(rows[i]);
-			if (row) {
-				row = row.split("|");
-				parsed[parsed.length] = {
-					data: row,
-					value: row[fieldNum],
-					result: formatResult(row, row[fieldNum])
-				};
-			}
-		}
+        // If the server responds with 204 No Content, then data will not
+        // be a string.
+        if(data.split){
+            var rows = data.split("\n");
+            for (var i=0; i < rows.length; i++) {
+                var row = $.trim(rows[i]);
+                if (row) {
+                    row = row.split("|");
+                    parsed[parsed.length] = {
+                        data: row,
+                        value: row[fieldNum],
+                        result: formatResult(row, row[fieldNum])
+                    };
+                }
+            }
+        }
 		return parsed;
 	};
 }

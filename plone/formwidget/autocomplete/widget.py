@@ -90,12 +90,13 @@ class AutocompleteBase(Explicit):
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
     formatResult = 'function(row, idx, count) { return ""; }'
     parseFunction = 'formwidget_autocomplete_parser('+formatResult+', 1)'
+    multiple = 'false'
 
     # JavaScript template
     js_template = """\
     (function($) {
         $().ready(function() {
-            $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s');
+            $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s').data('multiple', %(multiple)s);
             $('#%(id)s-buttons-search').remove();
             $('#%(id)s-widgets-query').autocomplete('%(url)s', {
                 autoFill: %(autoFill)s,
@@ -146,6 +147,7 @@ class AutocompleteBase(Explicit):
             formatItem=self.formatItem, formatResult=self.formatResult,
             parseFunction=self.parseFunction,
             klass=self.klass, title=self.title, input_type=self.input_type,
+            multiple=self.multiple,
             js_callback=js_callback, js_extra=self.js_extra())
 
 
@@ -168,6 +170,7 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase,
 
     klass = u'autocomplete-multiselection-widget'
     input_type = 'checkbox'
+    multiple = 'true'
     display_template = ViewPageTemplateFile('display.pt')
 
 @implementer(z3c.form.interfaces.IFieldWidget)
