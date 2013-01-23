@@ -30,6 +30,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         var klass = widget_base.data('klass');
         var title = widget_base.data('title');
         var type = widget_base.data('input_type');
+        var multiple = widget_base.data('multiple');
         var span = $('<span/>').attr("id",base_id+"-"+idx+"-wrapper").attr("class","option");
         // Note that Internet Explorer will usually *not* let you set the name via setAttribute.
         // Also, setting the type after adding a input to the DOM is also not allowed.
@@ -37,7 +38,7 @@ function formwidget_autocomplete_new_value(input_box,value,label) {
         // so we generate this one as text as well.
         span.append($("<label/>").attr("for",base_id+"-"+idx)
                                  .append($('<input type="' + type + '"' +
-                                                ' name="' + base_name + ':list"' +
+                                                ' name="' + base_name + (multiple?':list"':'"') +
                                                 ' checked="checked" />')
                                             .attr("id",base_id+"-"+idx)
                                             .attr("title",title)
