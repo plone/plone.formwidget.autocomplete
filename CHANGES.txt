@@ -4,6 +4,10 @@ Changelog
 1.2.5 (unreleased)
 ------------------
 
+* Use jQuery.prop() instead of jQuery.attr() to deselect radio buttons.
+* Only do list marshalling for multiple selection.
+* Handle the case where the server responds with 204 No Content.
+
 1.2.4 (2012-10-23)
 ------------------
 
