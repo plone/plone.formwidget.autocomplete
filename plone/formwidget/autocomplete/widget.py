@@ -85,7 +85,7 @@ class AutocompleteBase(Explicit):
     autoFill = True
     minChars = 2
     maxResults = 10
-    mustMatch = True
+    mustMatch = False
     matchContains = True
     formatItem = 'function(row, idx, count, value) { return row[1]; }'
     formatResult = 'function(row, idx, count) { return ""; }'
