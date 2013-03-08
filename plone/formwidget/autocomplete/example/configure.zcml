@@ -7,9 +7,9 @@
   <browser:page
     name="example.plone.formwidget.autocomplete"
     for="*"
-    class=".autocomplete.form_view"
+    class=".autocomplete.TestView"
     permission="zope2.View"
     />
-  <adapter factory=".autocomplete.CitiesFormAdapter"/>
+  <adapter factory=".autocomplete.TestAdapter"/>
 
 </configure>
