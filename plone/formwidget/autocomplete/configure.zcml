@@ -6,7 +6,7 @@
 
     <include package="plone.z3cform" />
     <include package="Products.GenericSetup" file="meta.zcml" />
-    <include package=".upgrades" />
+    <include file="upgrades.zcml" />
 
     <browser:page
         name="autocomplete-search"
@@ -15,9 +15,9 @@
         class=".widget.AutocompleteSearch"
         />
 
-    <browser:resourceDirectory
-        name="plone.formwidget.autocomplete"
-        directory="jquery-autocomplete"
+    <browser:resource
+        name="plone.formwidget.autocomplete.js"
+        file="autocomplete.js"
         />
 
     <gs:registerProfile
