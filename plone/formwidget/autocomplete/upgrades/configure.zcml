@@ -11,4 +11,13 @@
     handler=".to1.install_formwidget_autocomplete"
     />
 
+  <genericsetup:upgradeStep
+    source="1"
+    destination="2"
+    title="Install formwidget-autocomplete javascript"
+    description=""
+    profile="plone.formwidget.autocomplete:default"
+    handler=".1to2.remoteautocompleteplugin"
+    />
+
 </configure>
