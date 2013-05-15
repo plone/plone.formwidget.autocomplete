@@ -1,5 +1,5 @@
 function formwidget_autocomplete_new_value(input_box, value, label) {
-	console.log(input_box, value, label);
+	//console.log(input_box, value, label);
 	
     (function($) {	
 	/* Hack around bug as described on
@@ -51,10 +51,10 @@ function formwidget_autocomplete_new_value(input_box, value, label) {
                                  .append($("<span>").attr("class","label").text(label))
                                  );
         widget_base.append(span);
-    // In respect of the source.
-    if (!label) {
-		// data["item"]["value"] = ""	
-		label = "";
+        // In respect of the source. Does that (still) make sence?
+        if (!label) {
+           // data["item"]["value"] = ""	
+	   label = "";
 	}
 	
     }(jQuery));
