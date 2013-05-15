@@ -98,7 +98,7 @@ class AutocompleteBase(Explicit):
         $().ready(function() {
             $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s').data('multiple', %(multiple)s);
             $('#%(id)s-buttons-search').remove();
-            $('#%(id)s-widgets-query').autocomplete('%(url)s', {
+            $('#%(id)s-widgets-query').autocomplete_pfa('%(url)s', {
                 autoFill: %(autoFill)s,
                 minChars: %(minChars)d,
                 max: %(maxResults)d,
@@ -130,7 +130,7 @@ class AutocompleteBase(Explicit):
 
         return "%s/++widget++%s/@@autocomplete-search" % (
             form_url, self.name )
-    
+
     def js(self):
         # Use a template if it exists, in case anything overrode this interface
         js_callback = 'formwidget_autocomplete_ready'
