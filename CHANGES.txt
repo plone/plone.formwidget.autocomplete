@@ -7,9 +7,6 @@ Changelog
 * Use jQuery.prop() instead of jQuery.attr() to deselect radio buttons.
 * Only do list marshalling for multiple selection.
 * Handle the case where the server responds with 204 No Content.
-* Rename the autocomplete functionality from the included jquery plugin
-  this avoids aliasing problems with collective.js.jqueryui
-  [do3cc]
 
 1.2.4 (2012-10-23)
 ------------------
