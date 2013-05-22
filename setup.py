@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0.0dev'
+version = '1.2.5dev'
 
 setup(name='plone.formwidget.autocomplete',
       version=version,
@@ -25,10 +25,9 @@ setup(name='plone.formwidget.autocomplete',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'collective.js.jqueryui',
-          'plone.z3cform >= 0.7.4',
           'setuptools',
           'z3c.formwidget.query',
+          'plone.z3cform >= 0.7.4',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]

@@ -7,9 +7,8 @@ Changelog
 * Use jQuery.prop() instead of jQuery.attr() to deselect radio buttons.
 * Only do list marshalling for multiple selection.
 * Handle the case where the server responds with 204 No Content.
-* Remove autocomplete plugin, start using jqueryui autocomplete.
-  WARNING, customization is very different now and there is no upgrade path.
-  See README.txt
+* Rename the autocomplete functionality from the included jquery plugin
+  this avoids aliasing problems with collective.js.jqueryui
   [do3cc]
 
 1.2.4 (2012-10-23)
@@ -101,7 +100,7 @@ Changelog
   absolute URL.
   [dukebody]
 
-* Use the same display template for single- and multi-selection:
+* Use the same display template for single- and multi-selection:   
   The single selection display template was non functional before.
   The value of a single selection field is wrapped in a list anyways
   so the multiselection template renders the single selection field
@@ -121,7 +120,7 @@ Changelog
   Added a JavaScript work around, which dechecks all existing radio fields before
   adding a new one which is checked.
   [jbaumann]
-
+  
 * Made the widget work properly in Zope 2.12.
   [optilude]
 
