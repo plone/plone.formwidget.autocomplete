@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.5 (unreleased)
+1.2.5 (2013-08-23)
 ------------------
 
 * Use jQuery.prop() instead of jQuery.attr() to deselect radio buttons.
