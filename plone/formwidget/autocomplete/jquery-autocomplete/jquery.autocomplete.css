@@ -35,7 +35,7 @@
 }
 
 .ac_loading {
-	background: white url('indicator.gif') right center no-repeat;
+	background: white url('/++resource++plone.formwidget.autocomplete/indicator.gif') right center no-repeat;
 }
 
 .ac_odd {
@@ -46,3 +46,4 @@
 	background-color: #0A246A;
 	color: white;
 }
+
