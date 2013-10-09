@@ -5,6 +5,7 @@
     i18n_domain="plone.formwidget.autocomplete">
 
     <include package="plone.z3cform" />
+    <include package="collective.js.jqueryui" />
     <include package="Products.GenericSetup" file="meta.zcml" />
     <include file="upgrades.zcml" />
 
