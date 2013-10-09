@@ -150,7 +150,8 @@ class AutocompleteBase(Explicit):
 
         form_url = self.request.getURL()
 
-        form_prefix = self.form.prefix + self.__parent__.prefix
+        form_prefix  = z3c.form.util.expandPrefix(self.form.prefix)
+        form_prefix += z3c.form.util.expandPrefix(self.__parent__.prefix)
         widget_name = self.name[len(form_prefix):]
 
         url = "%s/++widget++%s/@@autocomplete-search" % (form_url, widget_name,)

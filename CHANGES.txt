@@ -23,6 +23,8 @@ Changelog
 * Use newer jQuery UI implementation of the autocomplete widget.
   [jbaumann]
 
+* Fix widget_name derivation for prefixes without trailing dots.
+  [gaudenz]
 
 1.2.2 (2011-09-24)
 ------------------
