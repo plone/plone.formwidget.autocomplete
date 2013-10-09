@@ -1,8 +1,19 @@
-function formwidget_autocomplete_new_value(event, data) {
-    (function($) { 
-        var input_box = $(event.target);
-	var value = data["item"]["value"];
-	var label = data["item"]["label"]
+function formwidget_autocomplete_new_value(input_box, value, label) {
+	//console.log(input_box, value, label);
+	
+    (function($) {	
+	/* Hack around bug as described on
+	 * http://stackoverflow.com/questions/15651455/plone-dexterity-relationchoice-widget-clashes-with-jqueryui/16516223#16516223
+	 * 
+	 * Fortunately, the autocomplete widget is easy to detect, because it 
+	 * leaves the "label" argument undefined.
+	 * */ 
+    if (!label) {
+		label = value["item"]["label"];
+		value = value["item"]["value"];
+		input_box = $(input_box.target);
+	}
+
         var base_id = input_box[0].id.replace(/-widgets-query$/,"");
         var base_name = input_box[0].name.replace(/\.widgets\.query$/,"");
         var widget_base = $('#'+base_id+"-input-fields");
@@ -40,6 +51,11 @@ function formwidget_autocomplete_new_value(event, data) {
                                  .append($("<span>").attr("class","label").text(label))
                                  );
         widget_base.append(span);
-	data["item"]["value"] = ""
+        // In respect of the source. Does that (still) make sence?
+        if (!label) {
+           // data["item"]["value"] = ""	
+	   label = "";
+	}
+	
     }(jQuery));
 }
