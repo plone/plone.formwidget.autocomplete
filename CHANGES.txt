@@ -26,6 +26,9 @@ Changelog
 * Fix widget_name derivation for prefixes without trailing dots.
   [gaudenz]
 
+* jQuery UI 1.9+ compatibility
+  [gaudenz]
+
 1.2.2 (2011-09-24)
 ------------------
 

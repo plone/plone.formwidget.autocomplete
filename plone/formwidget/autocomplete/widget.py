@@ -116,9 +116,10 @@ class AutocompleteBase(Explicit):
     }
 
     jq(function($) {
+        var query_input = $('#%(id)s-widgets-query');
         $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s');
         $('#%(id)s-buttons-search').remove();
-        $('#%(id)s-widgets-query').autocomplete({
+        query_input.autocomplete({
             source: '%(url)s',
             minLength: %(minLength)d,
             select: %(js_callback)s,
@@ -126,9 +127,12 @@ class AutocompleteBase(Explicit):
                 $('#%(id)s-widgets-query').val(ui.item.label);
                 return false;
             }
-        }).data("autocomplete")._renderItem = function(ul, item) {
+        });
+
+        var pre_1_9 = query_input.data("autocomplete") ? true : false;
+        query_input.data(pre_1_9 ? "autocomplete" : "ui-autocomplete")._renderItem = function(ul, item) {
             return $("<li></li>")
-                .data("item.autocomplete", item)
+                .data(pre_1_9 ? "item.autocomplete" : "ui-autocomplete-item", item)
                 .append("<a>" + item.label + " (" + item.value + ")</a>")
                 .appendTo(ul);
         };
