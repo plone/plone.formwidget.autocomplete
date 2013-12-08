@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.2.6 (unreleased)
+1.2.6 (2013-12-07)
 ------------------
 
 * Fix url in css for indicator.gif
+  [mitakas]
 
 
 1.2.5 (2013-08-23)
@@ -103,7 +104,7 @@ Changelog
   absolute URL.
   [dukebody]
 
-* Use the same display template for single- and multi-selection:   
+* Use the same display template for single- and multi-selection:
   The single selection display template was non functional before.
   The value of a single selection field is wrapped in a list anyways
   so the multiselection template renders the single selection field
@@ -123,7 +124,7 @@ Changelog
   Added a JavaScript work around, which dechecks all existing radio fields before
   adding a new one which is checked.
   [jbaumann]
-  
+
 * Made the widget work properly in Zope 2.12.
   [optilude]
 
