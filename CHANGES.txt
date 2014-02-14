@@ -29,6 +29,9 @@ Changelog
 * jQuery UI 1.9+ compatibility
   [gaudenz]
 
+* Attach dropdown menu to the widget instead of the body.
+  [gaudenz]
+
 1.2.2 (2011-09-24)
 ------------------
 
