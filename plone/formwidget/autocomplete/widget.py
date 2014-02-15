@@ -88,6 +88,11 @@ class AutocompleteBase(Explicit):
     input_template = ViewPageTemplateFile('input.pt')
     display_template = None # set by subclass
 
+    # Due to the fact that the widgets inherit from QuerySourceXXXWidget,
+    # the klass attribute can't be used without confusing results. This
+    # attribute defines the CSS class for the widgets div.
+    autocomplete_klass = ''
+
     # Options passed to jQuery auto-completer
     minLength = 2
 
@@ -180,7 +185,7 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.
     """
 
-    klass = u'autocomplete-selection-widget'
+    autocomplete_klass = u'autocomplete-selection-widget'
     input_type = 'radio'
     display_template = ViewPageTemplateFile('display.pt')
 
@@ -190,7 +195,7 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase,
     """Autocomplete widget that allows multiple selection
     """
 
-    klass = u'autocomplete-multiselection-widget'
+    autocomplete_klass = u'autocomplete-multiselection-widget'
     input_type = 'checkbox'
     display_template = ViewPageTemplateFile('display.pt')
 
