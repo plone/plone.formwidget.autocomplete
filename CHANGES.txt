@@ -35,6 +35,10 @@ Changelog
 * Add correct CSS class to the widget div
   [gaudenz]
 
+* Add "template" for items added by JavaScript. So that it's no longer necessary
+  to override the callback for this.
+  [gaudenz]
+
 1.2.2 (2011-09-24)
 ------------------
 

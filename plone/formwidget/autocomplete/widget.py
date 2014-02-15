@@ -100,13 +100,23 @@ class AutocompleteBase(Explicit):
 
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
+    # This needs to be a single line string, hence the \ at the end of each line
+    js_item_template = """\
+    <span id='%(id)s-%(termCount)d-wrapper' class='option'>\
+      <" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + ui.item.value + "' />\
+      <label for='%(id)s-%(termCount)d'>\
+        <span class='label'>" + ui.item.label + "</span>\
+      </label>\
+    </span>\
+    """
+
     js_callback_template = """\
     function(event, ui) {
         var field = $('#%(id)s-input-fields input[value="' + ui.item.value + '"]');
         $('#%(id)s-input-fields input[type=radio]').attr('checked', '');
         if(field.length == 0) {
             $('#%(id)s-%(termCount)d-wrapper').remove();
-            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-%(termCount)d-wrapper' class='option'><" + "input type='radio' id='%(id)s-%(termCount)d' name='%(name)s:list' class='%(klass)s' title='%(title)s' checked='checked' value='" + ui.item.value + "' /><label for='%(id)s-%(termCount)d'><span class='label'>" + ui.item.label + "</span></label></span>"));
+            $('#%(id)s-input-fields').append(htmlDecode("%(js_item)s"));
         } else {
             field.attr('checked', true);
         }
@@ -157,25 +167,28 @@ class AutocompleteBase(Explicit):
 
     def js(self):
 
+        # construct autosearch URL
         form_url = self.request.getURL()
-
         form_prefix  = z3c.form.util.expandPrefix(self.form.prefix)
         form_prefix += z3c.form.util.expandPrefix(self.__parent__.prefix)
         widget_name = self.name[len(form_prefix):]
-
         url = "%s/++widget++%s/@@autocomplete-search" % (form_url, widget_name,)
 
-        js_callback = self.js_callback_template % dict(id=self.id,
-                                                       name=self.name,
-                                                       klass=self.klass,
-                                                       title=self.title,
-                                                       termCount=len(self.terms))
-        return self.js_template % dict(id=self.id,
-                                       url=url,
-                                       minLength=self.minLength,
-                                       js_callback=js_callback,
-                                       klass=self.klass, title=self.title, input_type=self.input_type,
-                                       js_extra=self.js_extra())
+        template_vars = dict(id=self.id,
+                             name=self.name,
+                             klass=self.klass,
+                             title=self.title,
+                             termCount=len(self.terms),
+                             url=url,
+                             minLength=self.minLength,
+                             input_type=self.input_type,
+                             js_extra=self.js_extra(),
+                             )
+
+        template_vars['js_item'] = self.js_item_template % template_vars
+        template_vars['js_callback'] = self.js_callback_template % template_vars
+
+        return self.js_template % template_vars
 
 
 InitializeClass(AutocompleteBase)
@@ -201,12 +214,22 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase,
 
     # the funny <" + "input bit is to prevent breakage in testbrowser tests
     # when it parses the js as a real input, but with a bogus value
+
+    js_item_template = """\
+    <span id='%(id)s-" + itemCount + "-wrapper' class='option'>\
+      <" + "input type='checkbox' id='%(id)s-" + itemCount + "' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + ui.item.value + "' />\
+      <label for='%(id)s-" + itemCount + "'>\
+        <span class='label'>" + ui.item.label + "</span>\
+      </label>\
+    </span>\
+    """
+
     js_callback_template = """\
     function(event, ui) {
         var field = $('#%(id)s-input-fields input[value="' + ui.item.value + '"]');
         if(field.length == 0) {
             var itemCount = $('#%(id)s-input-fields input').length;
-            $('#%(id)s-input-fields').append(htmlDecode("<span id='%(id)s-" + itemCount + "-wrapper' class='option'><" + "input type='checkbox' id='%(id)s-" + itemCount + "' name='%(name)s:list' class='%(klass)s' checked='checked' value='" + ui.item.value + "' /><label for='%(id)s-" + itemCount + "'><span class='label'>" + ui.item.label + "</span></label></span>"));
+            $('#%(id)s-input-fields').append(htmlDecode("%(js_item)s"));
         } else {
             field.attr('checked', true);
         }
