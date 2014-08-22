@@ -8,5 +8,5 @@
 
     <include package="plone.z3cform" file="testing.zcml" />
     <include package="plone.formwidget.autocomplete" file="configure.zcml" />
-    
+
 </configure>

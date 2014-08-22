@@ -130,7 +130,7 @@ class AutocompleteBase(Explicit):
 
         return "%s/++widget++%s/@@autocomplete-search" % (
             form_url, self.name )
-    
+
     def js(self):
         # Use a template if it exists, in case anything overrode this interface
         js_callback = 'formwidget_autocomplete_ready'

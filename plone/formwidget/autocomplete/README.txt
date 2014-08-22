@@ -10,7 +10,7 @@ jQuery Autocomplete widget.
 First, we need a vocabulary to search. This is shamelessly stolen from
 z3c.formwidget.query, which we extend.
 
-  
+
     >>> from zope.interface import implements
     >>> from z3c.formwidget.query.interfaces import IQuerySource
     >>> from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
@@ -41,7 +41,7 @@ z3c.formwidget.query, which we extend.
     ...     implements(IContextSourceBinder)
     ...
     ...     def __call__(self, context):
-    ...         return ItalianCities(context)    
+    ...         return ItalianCities(context)
 
 Then, we will set up a simple test form and context.
 
@@ -101,7 +101,7 @@ Then, we will set up a simple test form and context.
     >>> from OFS.SimpleItem import SimpleItem
     >>> class Bar(SimpleItem):
     ...     implements(ICities)
-    ...     
+    ...
     ...     def __init__(self, id):
     ...         self.id = id
     ...         self.favourite_city = None
@@ -136,11 +136,11 @@ Simulates partial rendering:
     <script type="text/javascript">
     ... $('#form-widgets-visited_cities-widgets-query').autocomplete('http://foo/bar/@@cities-form/++widget++form.widgets.visited_cities/@@autocomplete-search', {
     ...
-    
+
 Above, we can see that the rendered JavaScript is expecting to call a view
 @@autocomplete-search on the widget to get search results. This may work
 like this:
-    
+
     >>> widget = form.widgets['favourite_city']
     >>> context.REQUEST._script = 'bar/@@cities-form/++widget++form.widgets.visited_cities/@@autocomplete-search'.split('/')
     >>> context.REQUEST._resetURLS()
@@ -149,7 +149,7 @@ like this:
     >>> print search_view()
     sorrento|Sorrento
     torino|Torino
-    
+
 The results are a newline-delimited list of key-value pairs separated by
 pipes.
 
@@ -161,7 +161,7 @@ z3c.formwidget.query extract() method.
   - If the search button from the query subform was clicked, then assume
     that we are doing an intermediate request for a search in non-AJAX
     mode. This button is hidden when JavaScript is enabled.
-        
+
     >>> search_request = make_request('bar/@@cities-form',
     ...                               {'form.widgets.visited_cities.widgets.query': 'sorrento',
     ...                                'form.widgets.visited_cities': ['torino'],
@@ -171,11 +171,11 @@ z3c.formwidget.query extract() method.
     >>> form_view.form_instance.update()
     >>> form_view.form_instance.widgets['visited_cities'].extract() == ['torino'] # [u'torino'] in Zope 2.12
     True
-    
+
   - Otherwise, if the widget id and form submit button are in the request,
     the user must have selected a radio button (single select) or one or more
     checkboxes (multi-select).
-    
+
     >>> search_request = make_request('bar/@@cities-form',
     ...                               {'form.widgets.visited_cities.widgets.query': 'sorrento',
     ...                                'form.widgets.visited_cities': ['torino'],
@@ -186,9 +186,9 @@ z3c.formwidget.query extract() method.
     Submitted data: {'visited_cities': [u'Torino']}
     >>> form_view.form_instance.widgets['visited_cities'].extract() == ['torino'] # [u'torino'] in Zope 2.12
     True
-    
+
   - Finally, if there nothing was selected, we return an empty list
-  
+
     >>> search_request = make_request('bar/@@cities-form',
     ...                               {'form.widgets.visited_cities-empty-marker': '1',
     ...                                'form.buttons.apply': 'Apply'})
