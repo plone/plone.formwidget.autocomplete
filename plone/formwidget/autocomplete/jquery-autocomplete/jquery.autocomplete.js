@@ -79,7 +79,7 @@ $.Autocompleter = function(input, options) {
     var select = $.Autocompleter.Select(options, input, selectCurrent, config);
 
     var blockSubmit;
-    var is_opera = navigator.userAgent.indexOf("Opera") != -1:
+    var is_opera = navigator.userAgent.indexOf("Opera") != -1;
 
     // prevent form submit in opera when selecting with return key
     is_opera && $(input.form).bind("submit.autocomplete", function() {
