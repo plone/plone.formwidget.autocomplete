@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.8 (unreleased)
+1.2.8 (2015-04-29)
 ------------------
 
 * Render CSS as link, no css-import. This allows cooking with other
