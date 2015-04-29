@@ -5,8 +5,8 @@ version = '1.2.8.dev0'
 setup(name='plone.formwidget.autocomplete',
       version=version,
       description="AJAX selection widget for Plone",
-      long_description=open("README.txt").read() + "\n" +
-                       open("CHANGES.txt").read(),
+      long_description=open("README.rst").read() + "\n" +
+                       open("CHANGES.rst").read(),
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Plone",
