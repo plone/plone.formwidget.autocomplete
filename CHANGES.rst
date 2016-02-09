@@ -4,10 +4,6 @@ Changelog
 1.2.9 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Use plone i18n domain
