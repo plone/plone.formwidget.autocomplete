@@ -10,7 +10,7 @@ import z3c.form.widget
 import z3c.form.util
 from z3c.formwidget.query.widget import QuerySourceRadioWidget
 from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
-from zope.interface import implementsOnly, implementer
+from zope.interface import implementer_only, implementer
 
 from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 
@@ -68,8 +68,8 @@ class AutocompleteSearch(BrowserView):
                             for t in sorted(terms, key=lambda t: t.title)])
 
 
+@implementer_only(IAutocompleteWidget)
 class AutocompleteBase(Explicit):
-    implementsOnly(IAutocompleteWidget)
 
     security = ClassSecurityInfo()
     security.declareObjectPublic()
