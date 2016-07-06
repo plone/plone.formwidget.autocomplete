@@ -3,7 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from z3c.form import form, button, field
 from z3c.formwidget.query.interfaces import IQuerySource
 from zope.component import adapts
-from zope.interface import Interface, implements
+from zope.interface import Interface, implementer
 from zope import schema
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
@@ -12,8 +12,8 @@ from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
 
 
+@implementer(IQuerySource)
 class KeywordSource(object):
-    implements(IQuerySource)
 
     def __init__(self, context):
         self.context = context
@@ -42,8 +42,8 @@ class KeywordSource(object):
         return [self.getTerm(kw) for kw in self.keywords if q in kw.lower()]
 
 
+@implementer(IContextSourceBinder)
 class KeywordSourceBinder(object):
-    implements(IContextSourceBinder)
 
     def __call__(self, context):
         return KeywordSource(context)
@@ -58,8 +58,8 @@ class ITestForm(Interface):
         title=u"Multiple", source=KeywordSourceBinder()), required=False)
 
 
+@implementer(ITestForm)
 class TestAdapter(object):
-    implements(ITestForm)
     adapts(Interface)
 
     def __init__(self, context):
