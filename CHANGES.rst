@@ -4,10 +4,6 @@ Changelog
 1.2.10 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Update setup.py url to point to github.
