@@ -58,7 +58,7 @@ function formwidget_autocomplete_parser(formatResult, fieldNum) {
 		var parsed = [];
         // If the server responds with 204 No Content, then data will not
         // be a string.
-        if(data.split){
+        if (data !== undefined && data.split){
             var rows = data.split("\n");
             for (var i=0; i < rows.length; i++) {
                 var row = $.trim(rows[i]);
