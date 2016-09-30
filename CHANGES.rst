@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Better handling of undefined data
+  [agitator]
 
 
 1.2.10 (2016-08-08)
