@@ -4,18 +4,10 @@ Changelog
 1.3.0 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Add uninstall profile.
   [thet]
-
-Bug fixes:
-
-- *add item here*
 
 
 1.2.11 (2016-10-05)
