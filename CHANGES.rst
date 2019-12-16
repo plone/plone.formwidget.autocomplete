@@ -6,7 +6,8 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Add Plone 5 compatibility
+  [laulaz]
 
 New features:
 
