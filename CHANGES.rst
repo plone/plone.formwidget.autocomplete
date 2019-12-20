@@ -6,12 +6,12 @@ Changelog
 
 Breaking changes:
 
-- Add Plone 5 compatibility
-  [laulaz]
+- *add item here*
 
 New features:
 
-- *add item here*
+- Add Plone 5 compatibility
+  [laulaz]
 
 Bug fixes:
 
