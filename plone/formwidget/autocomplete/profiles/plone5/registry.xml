@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone.resources/formwidget-autocomplete-jquery"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+    <value key="css">
+      <element>++resource++plone.formwidget.autocomplete/jquery.autocomplete.css</element>
+    </value>
+    <value key="js">++resource++plone.formwidget.autocomplete/jquery.autocomplete.min.js</value>
+  </records>
+
+  <records prefix="plone.resources/formwidget-autocomplete"
+           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+    <value key="js">++resource++plone.formwidget.autocomplete/formwidget-autocomplete.js</value>
+  </records>
+
+  <records prefix="plone.bundles/formwidget-autocomplete"
+           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+    <value key="resources">
+      <element>formwidget-autocomplete-jquery</element>
+      <element>formwidget-autocomplete</element>
+    </value>
+    <value key="depends">jquery</value>
+    <value key="csscompilation">++plone++static/formwidget.autocomplete.min.css</value>
+    <value key="jscompilation">++plone++static/formwidget.autocomplete.min.js</value>
+    <value key="compile">False</value>
+    <value key="enabled">True</value>
+  </records>
+
+</registry>

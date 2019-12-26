@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone.resources/formwidget-autocomplete-jquery"
+           interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           remove="true">
+  </records>
+
+  <records prefix="plone.resources/formwidget-autocomplete"
+           interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           remove="true">
+  </records>
+
+  <records prefix="plone.bundles/formwidget-autocomplete"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="true">
+  </records>
+
+</registry>

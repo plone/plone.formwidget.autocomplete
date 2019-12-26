@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:gs="http://namespaces.zope.org/genericsetup"
     i18n_domain="plone">
@@ -21,9 +22,18 @@
         />
 
     <gs:registerProfile
+        zcml:condition="not-have plone-5"
         name="default"
         title="Autocomplete widget"
-        directory="profiles/default"
+        directory="profiles/plone4"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+    <gs:registerProfile
+        zcml:condition="have plone-5"
+        name="default"
+        title="Autocomplete widget"
+        directory="profiles/plone5"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
