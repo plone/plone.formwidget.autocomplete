@@ -4,18 +4,10 @@ Changelog
 1.3.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Add Plone 5 compatibility
   [laulaz]
-
-Bug fixes:
-
-- *add item here*
 
 
 1.3.0 (2018-03-07)
