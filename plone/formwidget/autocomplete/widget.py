@@ -2,7 +2,7 @@ from AccessControl import getSecurityManager
 from AccessControl import ClassSecurityInfo
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
-from App.class_init import InitializeClass
+from AccessControl.class_init import InitializeClass
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 import z3c.form.interfaces
