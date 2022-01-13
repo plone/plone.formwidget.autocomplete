@@ -14,6 +14,7 @@ New features:
 
 Bug fixes:
 
+- Fix ModuleNotFoundError: No module named 'App.class_init' [krissik]
 - *add item here*
 
 
