@@ -4,18 +4,9 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- Fix ModuleNotFoundError: No module named 'App.class_init' [krissik]
-- *add item here*
+- Fix ModuleNotFoundError: No module named 'App.class_init' on Plone 6.  [krissik]
 
 
 1.4.0 (2020-01-27)
