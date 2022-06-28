@@ -69,7 +69,7 @@ class TestAdapter(object):
         return self.context.Subject() and self.context.Subject()[0] or None
 
     def _set_single_keyword(self, value):
-        print "setting", value
+        print("setting", value)
 
     single_keyword = property(_get_single_keyword, _set_single_keyword)
 
@@ -77,7 +77,7 @@ class TestAdapter(object):
         return self.context.Subject()
 
     def _set_keywords(self, value):
-        print "setting", value
+        print("setting", value)
 
     keywords = property(_get_keywords, _set_keywords)
 
@@ -90,6 +90,6 @@ class TestForm(form.Form):
     @button.buttonAndHandler(u'Ok')
     def handle_ok(self, action):
         data, errors = self.extractData()
-        print data, errors
+        print(data, errors)
 
 TestView = layout.wrap_form(TestForm)
