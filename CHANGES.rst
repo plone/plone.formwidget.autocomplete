@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Minor py3 fixes on the `demo` module. [gforcada]
 
 
 1.4.1 (2022-04-22)
