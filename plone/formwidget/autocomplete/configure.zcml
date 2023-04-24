@@ -22,7 +22,7 @@
         />
 
     <gs:registerProfile
-        zcml:condition="not-have plone-5"
+        zcml:condition="have plone-4"
         name="default"
         title="Autocomplete widget"
         directory="profiles/plone4"
@@ -34,6 +34,14 @@
         name="default"
         title="Autocomplete widget"
         directory="profiles/plone5"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+    <gs:registerProfile
+        zcml:condition="have plone-60"
+        name="default"
+        title="Autocomplete widget"
+        directory="profiles/plone6"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
