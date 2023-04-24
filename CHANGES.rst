@@ -10,7 +10,7 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+-  Add Plone 6 compatibility by precompiling bundle [Nimo-19]
 
 Bug fixes:
 

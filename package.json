@@ -1,0 +1,27 @@
+{
+  "name": "plone.formwidget.autocomplete",
+  "version": "1.0.0",
+  "description": "Introduction ============",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "bundle": "rollup plone/formwidget/autocomplete/jquery-autocomplete/main.js --file plone/formwidget/autocomplete/jquery-autocomplete/formwidget.autocomplete.bundle.js --format iife",
+    "minify": "rollup plone/formwidget/autocomplete/jquery-autocomplete/main.js --format iife | terser --compress --mangle -o plone/formwidget/autocomplete/jquery-autocomplete/formwidget.autocomplete.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nimo-19/plone.formwidget.autocomplete.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nimo-19/plone.formwidget.autocomplete/issues"
+  },
+  "homepage": "https://github.com/Nimo-19/plone.formwidget.autocomplete#readme",
+  "devDependencies": {
+    "rollup": "^3.21.0",
+    "terser": "^5.17.1"
+  }
+}
