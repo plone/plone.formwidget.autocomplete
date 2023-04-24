@@ -18,6 +18,6 @@
     import_steps="plone.app.registry"
     sortkey="1000"
     profile="plone.formwidget.autocomplete:plone5"
-    profile="datatable:default" />
+    />
 
 </configure>
