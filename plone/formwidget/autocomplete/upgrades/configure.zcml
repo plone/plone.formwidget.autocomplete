@@ -11,4 +11,13 @@
     handler=".to1.install_formwidget_autocomplete"
     />
 
+  <genericsetup:upgradeDepends
+    title="prebuild javascript bundle"
+    source="1"
+    destination="1"
+    import_steps="plone.app.registry"
+    sortkey="1000"
+    profile="plone.formwidget.autocomplete:plone5"
+    profile="datatable:default" />
+
 </configure>
