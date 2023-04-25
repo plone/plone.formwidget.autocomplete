@@ -7,8 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "bundle": "rollup plone/formwidget/autocomplete/jquery-autocomplete/main.js --file plone/formwidget/autocomplete/jquery-autocomplete/formwidget.autocomplete.bundle.js --format iife",
-    "minify": "rollup plone/formwidget/autocomplete/jquery-autocomplete/main.js --format iife | terser --compress --mangle -o plone/formwidget/autocomplete/jquery-autocomplete/formwidget.autocomplete.min.js"
+    "minify": "cat plone/formwidget/autocomplete/jquery-autocomplete/jquery.autocomplete.min.js plone/formwidget/autocomplete/jquery-autocomplete/formwidget-autocomplete.js | terser --compress --mangle -o plone/formwidget/autocomplete/jquery-autocomplete/formwidget.autocomplete.min.js"
   },
   "repository": {
     "type": "git",

@@ -4,8 +4,8 @@
   <records prefix="plone.bundles/formwidget-autocomplete"
            interface='Products.CMFPlone.interfaces.IBundleRegistry'>
     <value key="depends">plone</value>
-    <value key="csscompilation">++plone++static/formwidget.autocomplete.css</value>
-    <value key="jscompilation">++plone++static/formwidget.autocomplete.min.js</value>
+    <value key="csscompilation">++resource++plone.formwidget.autocomplete/jquery.autocomplete.css</value>
+    <value key="jscompilation">++resource++plone.formwidget.autocomplete/formwidget.autocomplete.min.js</value>
     <value key="compile">False</value>
     <value key="enabled">True</value>
   </records>
