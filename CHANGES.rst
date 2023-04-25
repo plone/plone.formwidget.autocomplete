@@ -1,16 +1,16 @@
 Changelog
 =========
 
-1.4.2 (unreleased)
+2.0.0 (unreleased)
 ------------------
 
 Breaking changes:
 
-- *add item here*
+-  Add Plone 6 compatibility by precompiling bundle [Nimo-19]
 
 New features:
 
--  Add Plone 6 compatibility by precompiling bundle [Nimo-19]
+- *add item here*
 
 Bug fixes:
 

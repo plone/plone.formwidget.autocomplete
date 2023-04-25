@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.4.2.dev0'
+version = '2.0.0.dev0'
 
 setup(name='plone.formwidget.autocomplete',
       version=version,
@@ -11,7 +11,6 @@ setup(name='plone.formwidget.autocomplete',
           "Development Status :: 5 - Production/Stable",
           "Environment :: Web Environment",
           "Framework :: Plone",
-          "Framework :: Plone :: 4.3",
           "Framework :: Plone :: 5.0",
           "Framework :: Plone :: 5.1",
           "Framework :: Plone :: 5.2",
@@ -20,8 +19,6 @@ setup(name='plone.formwidget.autocomplete',
           "License :: OSI Approved :: GNU General Public License (GPL)",
           "Operating System :: OS Independent",
           "Programming Language :: Python",
-          "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: 3.7",
           "Programming Language :: Python :: 3.8",
           "Programming Language :: Python :: 3.9",
