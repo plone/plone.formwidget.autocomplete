@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<registry>
+
+  <records prefix="plone.bundles/plone-formwidget-autocomplete"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry">
+    <value key="enabled">True</value>
+    <value key="jscompilation">++resource++plone.formwidget.autocomplete/formwidget-autocomplete.js</value>
+    <value key="depends">plone-formwidget-autocomplete-jquery</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
+  </records>
+
+  <records prefix="plone.bundles/plone-formwidget-autocomplete-jquery"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry">
+    <value key="enabled">True</value>
+    <value key="csscompilation">++resource++plone.formwidget.autocomplete/jquery.autocomplete.css</value>
+    <value key="jscompilation">++resource++plone.formwidget.autocomplete/jquery.autocomplete.min.js</value>
+    <value key="depends">plone</value>
+    <value key="load_async">False</value>
+    <value key="load_defer">False</value>
+  </records>
+
+</registry>

@@ -16,4 +16,14 @@
            remove="true">
   </records>
 
+  <records prefix="plone.bundles/plone-formwidget-autocomplete"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="true">
+  </records>
+
+  <records prefix="plone.bundles/plone-formwidget-autocomplete-jquery"
+           interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           remove="true">
+  </records>
+
 </registry>
