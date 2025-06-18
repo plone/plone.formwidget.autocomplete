@@ -4,13 +4,9 @@ Changelog
 1.4.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
-- *add item here*
+- Support proper resource registry settings when installing on Plone 6 as well.  [laulaz]
 
 Bug fixes:
 
