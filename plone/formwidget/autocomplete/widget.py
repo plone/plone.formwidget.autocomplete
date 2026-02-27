@@ -132,7 +132,7 @@ class AutocompleteBase(Explicit):
         """Generate the URL that returns autocomplete results for this form"""
         form_url = self.request.getURL()
 
-        return "{}/++widget++{}/@@autocomplete-search".format(form_url, self.name)
+        return f"{form_url}/++widget++{self.name}/@@autocomplete-search"
 
     def js(self):
         # Use a template if it exists, in case anything overrode this interface
