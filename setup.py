@@ -37,6 +37,10 @@ setup(
         "setuptools",
         "z3c.formwidget.query",
         "plone.z3cform >= 0.7.4",
+        "Products.CMFCore",
+        "Products.GenericSetup",
+        "z3c.form",
+        "Zope",
     ],
     entry_points="""
       [z3c.autoinclude.plugin]
