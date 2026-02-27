@@ -1,60 +1,64 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:gs="http://namespaces.zope.org/genericsetup"
-    i18n_domain="plone">
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
-    <include package="plone.z3cform" />
-    <include package="Products.GenericSetup" file="meta.zcml" />
-    <include package=".upgrades" />
+  <include package="plone.z3cform" />
+  <include
+      package="Products.GenericSetup"
+      file="meta.zcml"
+      />
+  <include package=".upgrades" />
 
-    <browser:page
-        name="autocomplete-search"
-        for=".interfaces.IAutocompleteWidget"
-        permission="zope.Public"
-        class=".widget.AutocompleteSearch"
-        />
+  <browser:page
+      name="autocomplete-search"
+      for=".interfaces.IAutocompleteWidget"
+      class=".widget.AutocompleteSearch"
+      permission="zope.Public"
+      />
 
-    <browser:resourceDirectory
-        name="plone.formwidget.autocomplete"
-        directory="jquery-autocomplete"
-        />
+  <browser:resourceDirectory
+      name="plone.formwidget.autocomplete"
+      directory="jquery-autocomplete"
+      />
 
+  <gs:registerProfile
+      name="default"
+      title="Autocomplete widget"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      directory="profiles/plone4"
+      zcml:condition="not-have plone-5"
+      />
+
+  <configure zcml:condition="not-have plone-60">
     <gs:registerProfile
-        zcml:condition="not-have plone-5"
         name="default"
         title="Autocomplete widget"
-        directory="profiles/plone4"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        directory="profiles/plone5"
+        zcml:condition="have plone-5"
         />
+  </configure>
 
-    <configure zcml:condition="not-have plone-60">
-        <gs:registerProfile
-            zcml:condition="have plone-5"
-            name="default"
-            title="Autocomplete widget"
-            directory="profiles/plone5"
-            for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-            provides="Products.GenericSetup.interfaces.EXTENSION"
-            />
-    </configure>
-
-    <gs:registerProfile
-        zcml:condition="have plone-60"
-        name="default"
-        title="Autocomplete widget"
-        directory="profiles/plone6"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
-    <gs:registerProfile
-        name="uninstall"
-        title="Autocomplete widget (uninstall)"
-        directory="profiles/uninstall"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+  <gs:registerProfile
+      name="default"
+      title="Autocomplete widget"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      directory="profiles/plone6"
+      zcml:condition="have plone-60"
+      />
+  <gs:registerProfile
+      name="uninstall"
+      title="Autocomplete widget (uninstall)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      directory="profiles/uninstall"
+      />
 
 </configure>

@@ -1,21 +1,24 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <registry>
 
-  <records prefix="plone.resources/formwidget-autocomplete-jquery"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           prefix="plone.resources/formwidget-autocomplete-jquery"
+  >
     <value key="css">
       <element>++resource++plone.formwidget.autocomplete/jquery.autocomplete.css</element>
     </value>
     <value key="js">++resource++plone.formwidget.autocomplete/jquery.autocomplete.min.js</value>
   </records>
 
-  <records prefix="plone.resources/formwidget-autocomplete"
-           interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           prefix="plone.resources/formwidget-autocomplete"
+  >
     <value key="js">++resource++plone.formwidget.autocomplete/formwidget-autocomplete.js</value>
   </records>
 
-  <records prefix="plone.bundles/formwidget-autocomplete"
-           interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+  <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           prefix="plone.bundles/formwidget-autocomplete"
+  >
     <value key="resources">
       <element>formwidget-autocomplete-jquery</element>
       <element>formwidget-autocomplete</element>
