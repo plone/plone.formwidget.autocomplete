@@ -195,7 +195,7 @@ Fixes:
   [dukebody]
 
 * Fall back to the site to perform content-related operations if the
-  context is not wrapped into an aquisition chain.
+  context is not wrapped into an acquisition chain.
   [dukebody]
 
 * Compute the view name as the request URL left-stripped the content
