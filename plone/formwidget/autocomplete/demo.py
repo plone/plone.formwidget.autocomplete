@@ -19,10 +19,9 @@ class KeywordSource:
 
     def __init__(self, context):
         self.context = context
-        catalog = getToolByName(context, 'portal_catalog')
-        self.keywords = catalog.uniqueValuesFor('Subject')
-        self.vocab = SimpleVocabulary.fromItems(
-            [(x, x) for x in self.keywords])
+        catalog = getToolByName(context, "portal_catalog")
+        self.keywords = catalog.uniqueValuesFor("Subject")
+        self.vocab = SimpleVocabulary.fromItems([(x, x) for x in self.keywords])
 
     def __contains__(self, term):
         return self.vocab.__contains__(term)
@@ -53,11 +52,15 @@ class KeywordSourceBinder:
 
 class ITestForm(Interface):
 
-    single_keyword = schema.Choice(title="Single",
-        source=KeywordSourceBinder(), required=False)
+    single_keyword = schema.Choice(
+        title="Single", source=KeywordSourceBinder(), required=False
+    )
 
-    keywords = schema.List(title="Multiple", value_type=schema.Choice(
-        title="Multiple", source=KeywordSourceBinder()), required=False)
+    keywords = schema.List(
+        title="Multiple",
+        value_type=schema.Choice(title="Multiple", source=KeywordSourceBinder()),
+        required=False,
+    )
 
 
 @implementer(ITestForm)
@@ -86,12 +89,13 @@ class TestAdapter:
 
 class TestForm(form.Form):
     fields = field.Fields(ITestForm)
-    fields['single_keyword'].widgetFactory = AutocompleteFieldWidget
-    fields['keywords'].widgetFactory = AutocompleteMultiFieldWidget
+    fields["single_keyword"].widgetFactory = AutocompleteFieldWidget
+    fields["keywords"].widgetFactory = AutocompleteMultiFieldWidget
 
-    @button.buttonAndHandler('Ok')
+    @button.buttonAndHandler("Ok")
     def handle_ok(self, action):
         data, errors = self.extractData()
         print(data, errors)
+
 
 TestView = layout.wrap_form(TestForm)
