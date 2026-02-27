@@ -1,7 +1,7 @@
+from Products.PloneTestCase.layer import ZCMLLayer as BaseZCMLLayer
+
 import doctest
 import unittest
-
-from Products.PloneTestCase.layer import ZCMLLayer as BaseZCMLLayer
 
 # BBB for Zope 2.12
 try:

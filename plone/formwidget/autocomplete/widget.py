@@ -1,18 +1,19 @@
-from AccessControl import getSecurityManager
 from AccessControl import ClassSecurityInfo
+from AccessControl import getSecurityManager
+from AccessControl.class_init import InitializeClass
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
-from AccessControl.class_init import InitializeClass
+from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-import z3c.form.interfaces
-import z3c.form.widget
-import z3c.form.util
-from z3c.formwidget.query.widget import QuerySourceRadioWidget
 from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
-from zope.interface import implementer_only, implementer
+from z3c.formwidget.query.widget import QuerySourceRadioWidget
+from zope.interface import implementer
+from zope.interface import implementer_only
 
-from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
+import z3c.form.interfaces
+import z3c.form.util
+import z3c.form.widget
 
 
 class AutocompleteSearch(BrowserView):

@@ -1,15 +1,17 @@
-from plone.z3cform import layout
-from Products.CMFCore.utils import getToolByName
-from z3c.form import form, button, field
-from z3c.formwidget.query.interfaces import IQuerySource
-from zope.component import adapts
-from zope.interface import Interface, implementer
-from zope import schema
-from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary
-
 from plone.formwidget.autocomplete import AutocompleteFieldWidget
 from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
+from plone.z3cform import layout
+from Products.CMFCore.utils import getToolByName
+from z3c.form import button
+from z3c.form import field
+from z3c.form import form
+from z3c.formwidget.query.interfaces import IQuerySource
+from zope import schema
+from zope.component import adapts
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.schema.interfaces import IContextSourceBinder
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 @implementer(IQuerySource)
