@@ -64,7 +64,7 @@ class AutocompleteSearch(BrowserView):
         else:
             terms = set()
 
-        return '\n'.join(["%s|%s" % (t.token, t.title or t.token)
+        return '\n'.join([f"{t.token}|{t.title or t.token}"
                             for t in sorted(terms, key=lambda t: t.title)])
 
 
@@ -128,7 +128,7 @@ class AutocompleteBase(Explicit):
         """
         form_url = self.request.getURL()
 
-        return "%s/++widget++%s/@@autocomplete-search" % (
+        return "{}/++widget++{}/@@autocomplete-search".format(
             form_url, self.name )
 
     def js(self):
@@ -158,7 +158,7 @@ class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
     """Autocomplete widget that allows single selection.
     """
 
-    klass = u'autocomplete-selection-widget'
+    klass = 'autocomplete-selection-widget'
     input_type = 'radio'
     display_template = ViewPageTemplateFile('display.pt')
 
@@ -168,7 +168,7 @@ class AutocompleteMultiSelectionWidget(AutocompleteBase,
     """Autocomplete widget that allows multiple selection
     """
 
-    klass = u'autocomplete-multiselection-widget'
+    klass = 'autocomplete-multiselection-widget'
     input_type = 'checkbox'
     multiple = True
     display_template = ViewPageTemplateFile('display.pt')

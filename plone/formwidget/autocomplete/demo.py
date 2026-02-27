@@ -13,7 +13,7 @@ from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
 
 
 @implementer(IQuerySource)
-class KeywordSource(object):
+class KeywordSource:
 
     def __init__(self, context):
         self.context = context
@@ -43,7 +43,7 @@ class KeywordSource(object):
 
 
 @implementer(IContextSourceBinder)
-class KeywordSourceBinder(object):
+class KeywordSourceBinder:
 
     def __call__(self, context):
         return KeywordSource(context)
@@ -51,15 +51,15 @@ class KeywordSourceBinder(object):
 
 class ITestForm(Interface):
 
-    single_keyword = schema.Choice(title=u"Single",
+    single_keyword = schema.Choice(title="Single",
         source=KeywordSourceBinder(), required=False)
 
-    keywords = schema.List(title=u"Multiple", value_type=schema.Choice(
-        title=u"Multiple", source=KeywordSourceBinder()), required=False)
+    keywords = schema.List(title="Multiple", value_type=schema.Choice(
+        title="Multiple", source=KeywordSourceBinder()), required=False)
 
 
 @implementer(ITestForm)
-class TestAdapter(object):
+class TestAdapter:
     adapts(Interface)
 
     def __init__(self, context):
@@ -87,7 +87,7 @@ class TestForm(form.Form):
     fields['single_keyword'].widgetFactory = AutocompleteFieldWidget
     fields['keywords'].widgetFactory = AutocompleteMultiFieldWidget
 
-    @button.buttonAndHandler(u'Ok')
+    @button.buttonAndHandler('Ok')
     def handle_ok(self, action):
         data, errors = self.extractData()
         print(data, errors)
