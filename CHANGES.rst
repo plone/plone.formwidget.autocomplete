@@ -1,20 +1,19 @@
 Changelog
 =========
 
-1.5.1 (unreleased)
-------------------
+2.0.0a1 (unreleased)
+--------------------
 
 Breaking changes:
 
-- *add item here*
+- Support only Plone 6.0 and 6.1.
+  6.2 may work, but we still have ``pkg_resources`` namespaces, making it hard to test.
+  [gforcada, maurits]
 
-New features:
+Tests:
 
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Fix tests to no longer use ``Products.PloneTestCase``.
+  [maurits]
 
 
 1.5.0 (2025-06-19)
@@ -195,7 +194,7 @@ Fixes:
   [dukebody]
 
 * Fall back to the site to perform content-related operations if the
-  context is not wrapped into an aquisition chain.
+  context is not wrapped into an acquisition chain.
   [dukebody]
 
 * Compute the view name as the request URL left-stripped the content

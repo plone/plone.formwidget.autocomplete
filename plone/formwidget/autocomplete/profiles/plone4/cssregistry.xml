@@ -1,9 +1,16 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <object name="portal_css">
 
- <stylesheet id="++resource++plone.formwidget.autocomplete/jquery.autocomplete.css"
-     title="" cacheable="True" compression="safe" cookable="True"
-     enabled="1" expression="" media="screen"
-     rel="stylesheet" rendering="link" />
+  <stylesheet id="++resource++plone.formwidget.autocomplete/jquery.autocomplete.css"
+              cacheable="True"
+              compression="safe"
+              cookable="True"
+              enabled="1"
+              expression=""
+              media="screen"
+              rel="stylesheet"
+              rendering="link"
+              title=""
+  />
 
 </object>

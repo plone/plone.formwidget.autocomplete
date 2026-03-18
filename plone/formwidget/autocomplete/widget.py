@@ -1,18 +1,19 @@
-from AccessControl import getSecurityManager
 from AccessControl import ClassSecurityInfo
+from AccessControl import getSecurityManager
+from AccessControl.class_init import InitializeClass
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
-from AccessControl.class_init import InitializeClass
+from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-import z3c.form.interfaces
-import z3c.form.widget
-import z3c.form.util
-from z3c.formwidget.query.widget import QuerySourceRadioWidget
 from z3c.formwidget.query.widget import QuerySourceCheckboxWidget
-from zope.interface import implementer_only, implementer
+from z3c.formwidget.query.widget import QuerySourceRadioWidget
+from zope.interface import implementer
+from zope.interface import implementer_only
 
-from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
+import z3c.form.interfaces
+import z3c.form.util
+import z3c.form.widget
 
 
 class AutocompleteSearch(BrowserView):
@@ -27,15 +28,15 @@ class AutocompleteSearch(BrowserView):
             return
 
         url = self.request.getURL()
-        view_name = url[len(content.absolute_url()):].split('/')[1]
+        view_name = url[len(content.absolute_url()) :].split("/")[1]
 
         # May raise Unauthorized
 
         # If the view is 'edit', then traversal prefers the view and
         # restrictedTraverse prefers the edit() method present on most CMF
         # content. Sigh...
-        if not view_name.startswith('@@') and not view_name.startswith('++'):
-            view_name = '@@' + view_name
+        if not view_name.startswith("@@") and not view_name.startswith("++"):
+            view_name = "@@" + view_name
 
         view_instance = content.restrictedTraverse(view_name)
         sm = getSecurityManager()
@@ -48,9 +49,9 @@ class AutocompleteSearch(BrowserView):
         # applied yet during traversal.
         self.validate_access()
 
-        query = self.request.get('q', None)
+        query = self.request.get("q", None)
         if not query:
-            return ''
+            return ""
 
         # Update the widget before accessing the source.
         # The source was only bound without security applied
@@ -64,8 +65,12 @@ class AutocompleteSearch(BrowserView):
         else:
             terms = set()
 
-        return '\n'.join(["%s|%s" % (t.token, t.title or t.token)
-                            for t in sorted(terms, key=lambda t: t.title)])
+        return "\n".join(
+            [
+                f"{t.token}|{t.title or t.token}"
+                for t in sorted(terms, key=lambda t: t.title)
+            ]
+        )
 
 
 @implementer_only(IAutocompleteWidget)
@@ -78,8 +83,8 @@ class AutocompleteBase(Explicit):
     # if we call this 'template' or use a <z3c:widgetTemplate /> directive,
     # we'll get infinite recursion when trying to render the radio buttons.
 
-    input_template = ViewPageTemplateFile('input.pt')
-    display_template = None # set by subclass
+    input_template = ViewPageTemplateFile("input.pt")
+    display_template = None  # set by subclass
 
     # Options passed to jQuery auto-completer
     autoFill = True
@@ -87,9 +92,9 @@ class AutocompleteBase(Explicit):
     maxResults = 10
     mustMatch = False
     matchContains = True
-    formatItem = 'function(row, idx, count, value) { return row[1]; }'
+    formatItem = "function(row, idx, count, value) { return row[1]; }"
     formatResult = 'function(row, idx, count) { return ""; }'
-    parseFunction = 'formwidget_autocomplete_parser('+formatResult+', 1)'
+    parseFunction = "formwidget_autocomplete_parser(" + formatResult + ", 1)"
     multiple = False
 
     # JavaScript template
@@ -124,62 +129,68 @@ class AutocompleteBase(Explicit):
             return self.input_template(self)
 
     def autocomplete_url(self):
-        """Generate the URL that returns autocomplete results for this form
-        """
+        """Generate the URL that returns autocomplete results for this form"""
         form_url = self.request.getURL()
 
-        return "%s/++widget++%s/@@autocomplete-search" % (
-            form_url, self.name )
+        return f"{form_url}/++widget++{self.name}/@@autocomplete-search"
 
     def js(self):
         # Use a template if it exists, in case anything overrode this interface
-        js_callback = 'formwidget_autocomplete_ready'
-        if hasattr(self,'js_callback_template'):
-            js_callback = self.js_callback_template % dict(id=self.id,
-                name=self.name, klass=self.klass, title=self.title,
-                termCount=len(self.terms))
+        js_callback = "formwidget_autocomplete_ready"
+        if hasattr(self, "js_callback_template"):
+            js_callback = self.js_callback_template % dict(
+                id=self.id,
+                name=self.name,
+                klass=self.klass,
+                title=self.title,
+                termCount=len(self.terms),
+            )
 
-        return self.js_template % dict(id=self.id, url=self.autocomplete_url(),
+        return self.js_template % dict(
+            id=self.id,
+            url=self.autocomplete_url(),
             autoFill=str(self.autoFill).lower(),
-            minChars=self.minChars, maxResults=self.maxResults,
+            minChars=self.minChars,
+            maxResults=self.maxResults,
             mustMatch=str(self.mustMatch).lower(),
             matchContains=str(self.matchContains).lower(),
-            formatItem=self.formatItem, formatResult=self.formatResult,
+            formatItem=self.formatItem,
+            formatResult=self.formatResult,
             parseFunction=self.parseFunction,
-            klass=self.klass, title=self.title, input_type=self.input_type,
+            klass=self.klass,
+            title=self.title,
+            input_type=self.input_type,
             multiple=str(self.multiple).lower(),
-            js_callback=js_callback, js_extra=self.js_extra())
+            js_callback=js_callback,
+            js_extra=self.js_extra(),
+        )
 
 
 InitializeClass(AutocompleteBase)
 
 
 class AutocompleteSelectionWidget(AutocompleteBase, QuerySourceRadioWidget):
-    """Autocomplete widget that allows single selection.
-    """
+    """Autocomplete widget that allows single selection."""
 
-    klass = u'autocomplete-selection-widget'
-    input_type = 'radio'
-    display_template = ViewPageTemplateFile('display.pt')
+    klass = "autocomplete-selection-widget"
+    input_type = "radio"
+    display_template = ViewPageTemplateFile("display.pt")
 
 
-class AutocompleteMultiSelectionWidget(AutocompleteBase,
-                                       QuerySourceCheckboxWidget):
-    """Autocomplete widget that allows multiple selection
-    """
+class AutocompleteMultiSelectionWidget(AutocompleteBase, QuerySourceCheckboxWidget):
+    """Autocomplete widget that allows multiple selection"""
 
-    klass = u'autocomplete-multiselection-widget'
-    input_type = 'checkbox'
+    klass = "autocomplete-multiselection-widget"
+    input_type = "checkbox"
     multiple = True
-    display_template = ViewPageTemplateFile('display.pt')
+    display_template = ViewPageTemplateFile("display.pt")
+
 
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteFieldWidget(field, request):
-    return z3c.form.widget.FieldWidget(field,
-        AutocompleteSelectionWidget(request))
+    return z3c.form.widget.FieldWidget(field, AutocompleteSelectionWidget(request))
 
 
 @implementer(z3c.form.interfaces.IFieldWidget)
 def AutocompleteMultiFieldWidget(field, request):
-    return z3c.form.widget.FieldWidget(field,
-        AutocompleteMultiSelectionWidget(request))
+    return z3c.form.widget.FieldWidget(field, AutocompleteMultiSelectionWidget(request))

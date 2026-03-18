@@ -1,26 +1,27 @@
+from plone.formwidget.autocomplete import AutocompleteFieldWidget
+from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
 from plone.z3cform import layout
 from Products.CMFCore.utils import getToolByName
-from z3c.form import form, button, field
+from z3c.form import button
+from z3c.form import field
+from z3c.form import form
 from z3c.formwidget.query.interfaces import IQuerySource
-from zope.component import adapts
-from zope.interface import Interface, implementer
 from zope import schema
+from zope.component import adapts
+from zope.interface import implementer
+from zope.interface import Interface
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary
 
-from plone.formwidget.autocomplete import AutocompleteFieldWidget
-from plone.formwidget.autocomplete import AutocompleteMultiFieldWidget
-
 
 @implementer(IQuerySource)
-class KeywordSource(object):
+class KeywordSource:
 
     def __init__(self, context):
         self.context = context
-        catalog = getToolByName(context, 'portal_catalog')
-        self.keywords = catalog.uniqueValuesFor('Subject')
-        self.vocab = SimpleVocabulary.fromItems(
-            [(x, x) for x in self.keywords])
+        catalog = getToolByName(context, "portal_catalog")
+        self.keywords = catalog.uniqueValuesFor("Subject")
+        self.vocab = SimpleVocabulary.fromItems([(x, x) for x in self.keywords])
 
     def __contains__(self, term):
         return self.vocab.__contains__(term)
@@ -43,7 +44,7 @@ class KeywordSource(object):
 
 
 @implementer(IContextSourceBinder)
-class KeywordSourceBinder(object):
+class KeywordSourceBinder:
 
     def __call__(self, context):
         return KeywordSource(context)
@@ -51,15 +52,19 @@ class KeywordSourceBinder(object):
 
 class ITestForm(Interface):
 
-    single_keyword = schema.Choice(title=u"Single",
-        source=KeywordSourceBinder(), required=False)
+    single_keyword = schema.Choice(
+        title="Single", source=KeywordSourceBinder(), required=False
+    )
 
-    keywords = schema.List(title=u"Multiple", value_type=schema.Choice(
-        title=u"Multiple", source=KeywordSourceBinder()), required=False)
+    keywords = schema.List(
+        title="Multiple",
+        value_type=schema.Choice(title="Multiple", source=KeywordSourceBinder()),
+        required=False,
+    )
 
 
 @implementer(ITestForm)
-class TestAdapter(object):
+class TestAdapter:
     adapts(Interface)
 
     def __init__(self, context):
@@ -84,12 +89,13 @@ class TestAdapter(object):
 
 class TestForm(form.Form):
     fields = field.Fields(ITestForm)
-    fields['single_keyword'].widgetFactory = AutocompleteFieldWidget
-    fields['keywords'].widgetFactory = AutocompleteMultiFieldWidget
+    fields["single_keyword"].widgetFactory = AutocompleteFieldWidget
+    fields["keywords"].widgetFactory = AutocompleteMultiFieldWidget
 
-    @button.buttonAndHandler(u'Ok')
+    @button.buttonAndHandler("Ok")
     def handle_ok(self, action):
         data, errors = self.extractData()
         print(data, errors)
+
 
 TestView = layout.wrap_form(TestForm)

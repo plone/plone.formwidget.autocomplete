@@ -1,29 +1,34 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <registry>
 
-  <records prefix="plone.resources/formwidget-autocomplete-jquery"
-           interface="Products.CMFPlone.interfaces.IResourceRegistry"
-           remove="true">
+  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           prefix="plone.resources/formwidget-autocomplete-jquery"
+           remove="true"
+  >
   </records>
 
-  <records prefix="plone.resources/formwidget-autocomplete"
-           interface="Products.CMFPlone.interfaces.IResourceRegistry"
-           remove="true">
+  <records interface="Products.CMFPlone.interfaces.IResourceRegistry"
+           prefix="plone.resources/formwidget-autocomplete"
+           remove="true"
+  >
   </records>
 
-  <records prefix="plone.bundles/formwidget-autocomplete"
-           interface="Products.CMFPlone.interfaces.IBundleRegistry"
-           remove="true">
+  <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           prefix="plone.bundles/formwidget-autocomplete"
+           remove="true"
+  >
   </records>
 
-  <records prefix="plone.bundles/plone-formwidget-autocomplete"
-           interface="Products.CMFPlone.interfaces.IBundleRegistry"
-           remove="true">
+  <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           prefix="plone.bundles/plone-formwidget-autocomplete"
+           remove="true"
+  >
   </records>
 
-  <records prefix="plone.bundles/plone-formwidget-autocomplete-jquery"
-           interface="Products.CMFPlone.interfaces.IBundleRegistry"
-           remove="true">
+  <records interface="Products.CMFPlone.interfaces.IBundleRegistry"
+           prefix="plone.bundles/plone-formwidget-autocomplete-jquery"
+           remove="true"
+  >
   </records>
 
 </registry>
