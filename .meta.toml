@@ -6,4 +6,4 @@ template = "default"
 commit-id = "2.6.1.dev0"
 
 [tox]
-test_matrix = {"6.2" = ["*"]}
+test_matrix = {"6.1" = ["*"], "6.0" = ["*"]}
