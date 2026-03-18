@@ -6,15 +6,14 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Support only Plone 6.0 and 6.1.
+  6.2 may work, but we still have ``pkg_resources`` namespaces, making it hard to test.
+  [gforcada, maurits]
 
-New features:
+Tests:
 
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Fix tests to no longer use ``Products.PloneTestCase``.
+  [maurits]
 
 
 1.5.0 (2025-06-19)
