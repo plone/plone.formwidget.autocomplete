@@ -42,6 +42,9 @@ setup(
         "z3c.form",
         "Zope",
     ],
+    extras_require={
+        "test": ["Products.PloneTestCase"],
+    },
     entry_points="""
       [z3c.autoinclude.plugin]
       target = plone

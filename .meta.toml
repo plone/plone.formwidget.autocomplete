@@ -7,4 +7,3 @@ commit-id = "2.6.1.dev0"
 
 [tox]
 test_matrix = {"6.2" = ["*"]}
-skip_test_extra = true
