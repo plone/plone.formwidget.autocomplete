@@ -43,7 +43,7 @@ setup(
         "Zope",
     ],
     extras_require={
-        "test": ["Products.PloneTestCase"],
+        "test": ["plone.app.testing"],
     },
     entry_points="""
       [z3c.autoinclude.plugin]
