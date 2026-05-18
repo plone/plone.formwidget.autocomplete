@@ -1,20 +1,12 @@
 Changelog
 =========
 
-2.0.0a2 (unreleased)
---------------------
-
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
+2.0.0 (unreleased)
+------------------
 
 Bug fixes:
 
-- *add item here*
+- Make final release, no further changes.
 
 
 2.0.0a1 (2026-03-27)
